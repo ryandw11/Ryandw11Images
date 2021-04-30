@@ -1,0 +1,17 @@
+<header>
+    <nav id="navbar">
+        <img id="logo" src="/images/logo.png" alt="">
+        <a id="navicon"><img src="/images/mobile_nav.png" alt=""></a>
+        <ul id="navigation">
+            <li><a href="/" class="{{index}}">Browse</a></li>
+            <li><a href="/search" class="{{search}}">Search</a></li>
+            <li><a href="/upload" class="{{upload}}">Upload</a></li>
+            {{#if session.loggedin}}
+            <li><a href="/profile" class="nav-right {{login}}">{{session.username}}</a></li>
+            {{else}}
+            <li><a href="/login" class="nav-right {{login}}">Login</a></li>
+            {{/if}}
+        </ul>
+    </nav>
+    <script src="/js/navigation.js"></script>
+</header>

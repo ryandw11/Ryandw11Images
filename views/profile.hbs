@@ -1,0 +1,141 @@
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{user.user_name}} | Ryandw11 Images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="View the images for {{user.user_name}}.">
+    <!-- The Generic CSS Styles -->
+    {{> common_css}}
+    <!-- Page Specifc CSS Style Pages -->
+    <link rel="stylesheet" href="/css/page_styles/index.css">
+    <link rel="icon" href="/images/favicon.png" type="image/png" sizes="16x16">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    {{> head}}
+    <div id="headerBackground">
+        <h1>{{user.user_name}}'s Images</h1>
+    </div>
+    <!-- The main content -->
+    <main>
+        {{#if admin}}
+        <style>
+            #edit-row {
+                margin: auto;
+            }
+        </style>
+        <div class="container card mt-2 mb-5">
+            <p class="text-center text-dark">Admin Options:</p>
+            <div id="edit-row" class="row mt-2">
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Revoke Session"><a
+                            class="text-primary" aria-label="Revoke Session" id="edit" href="" class="btn"
+                            data-toggle="modal" data-target="#revokeSession"><i data-feather="log-out"></i></a></span>
+                </p>
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Delete Account"><a
+                            class="text-danger" aria-label="Delete Account" id="edit" href="" class="btn"
+                            data-toggle="modal" data-target="#deleteAccount"><i data-feather="trash-2"></i></a></span>
+                </p>
+            </div>
+        </div>
+        {{/if}}
+        <div class="card-columns container">
+            {{#each images}}
+            <div class="card">
+                <img class="card-img-top border" style="max-height: 25rem;" src="/raw/{{file}}" alt="{{caption}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{name}}</h5>
+                    <p class="card-text" style="color: black;">{{caption}}</p>
+                    <a href="/image/{{file_id}}" class="card-link">View</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Uploaded: {{date}}</small>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        {{#if admin}}
+        {{!--Log Out Model --}}
+        <div class="modal fade" id="revokeSession" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            role="dialog" aria-labelledby="revokeSessionLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="revokeSessionLabel">Admin Revoke Session</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/auth/admin/revoke-session" method="post">
+                        <div class="modal-body">
+                            <p style="color: black;">Do you want to revoke {{user.user_name}}'s session?</p>
+                        </div>
+                        <input type="hidden" name="revoke_id" value="{{user.user_id}}" />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Revoke</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{!-- Delete Account --}}
+        <div class="modal fade" id="deleteAccount" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            role="dialog" aria-labelledby="deleteAccountLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountLabel">Admin Delete Account</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{!-- The form for the edit image. --}}
+                    <form action="/auth/admin/delete-account" method="post" class="needs-validation" novalidate>
+                        <div id="delete-account-error" class="alert alert-danger container w-20" style="display: none;"
+                            role="alert">
+                            <i data-feather="alert-circle"></i>
+                            <span>An error has occured!</span>
+                        </div>
+                        <div class="modal-body">
+                            <p style="color: black;">Are you sure you want to delete {{user.user_name}}'s account? All
+                                their images will be deleted. This action <strong>cannot</strong> be
+                                undone.</p>
+                            <label>Type in the code <strong>{{random_code}}</strong> to continue:</label>
+                            <input class="form-control" type="text" name="confirm_code" id="confirm-code" required />
+                            <div class="invalid-feedback">
+                                Please enter in the confirmation code.
+                            </div>
+                            <input type="hidden" name="random_code" value="{{random_code}}" />
+                            <input type="hidden" name="delete_id" value="{{user.user_id}}" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </main>
+
+    {{> footer}}
+
+    <!-- The JavaScripts -->
+    <script src="/feather.min.js"></script>
+    {{#if admin}}
+    <script src="/js/profile_admin.js"></script>
+    {{/if}}
+    <script>
+        feather.replace({ width: '30', height: '30', 'stroke-width': '1' });
+        $(() => {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Upload Image | Ryandw11 Images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Upload images to Ryandw11 Images.">
+    <!-- The Generic CSS Styles -->
+    {{> common_css}}
+    <!-- Page Specifc CSS Style Pages -->
+    <link rel="stylesheet" href="/css/page_styles/index.css">
+    <link rel="stylesheet" href="/css/page_styles/create.css">
+    <link rel="icon" href="/images/favicon.png" type="image/png" sizes="16x16">
+</head>
+
+<body>
+    {{> head}}
+    <div id="headerBackground">
+        <h1>Upload Image</h1>
+    </div>
+    <!-- The main content -->
+    <main class="container">
+        {{#if session.loggedin}}
+            <form action="/handle/upload" enctype="multipart/form-data" method="post" id="upload-image" class="needs-validation" novalidate>
+                <label class="txt-color" for="">Upload image(s) to Ryandw11 Images:</label>
+                <div class="upload-box container">
+                    <p><i data-feather="download"></i><br>Drop any file(s) here to upload!</p>
+                </div>
+                <button type="button" class="uploader btn btn-primary mt-3">Select Files</button>
+                <input type="file" name="fileImage" id="files" class="file-uploader" accept=".png,.jpg,.jpeg,.gif" multiple required />
+                <div class='invalid-feedback'></div>
+                <h2>Uploaded Files:</h2>
+                <div class="file-display"></div>
+                <input id="submit" type="submit" value="Upload Images" class="btn btn-success mt-3 submit" />
+            </form>
+        {{else}}
+            <div id="signup-error" class="alert alert-danger container w-20 mt-5" role="alert">
+                <i data-feather="alert-circle"></i>
+                You must be logged in to upload images!
+            </div>
+        {{/if}}
+    </main>
+
+    {{> footer}}
+
+    <!-- The JavaScripts -->
+    <script src="/js/create.js"></script>
+    <script src="/feather.min.js"></script>
+    <script>
+        feather.replace({ width: '65', height: '65', 'stroke-width': '1' });
+    </script>
+</body>
+
+</html>

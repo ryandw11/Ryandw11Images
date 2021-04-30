@@ -1,0 +1,202 @@
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Your Profile | Ryandw11 Images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The homepage for the user.">
+    <!-- The Generic CSS Styles -->
+    {{> common_css}}
+    <!-- Page Specifc CSS Style Pages -->
+    <link rel="stylesheet" href="/css/page_styles/index.css">
+    <link rel="icon" href="/images/favicon.png" type="image/png" sizes="16x16">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    {{> head}}
+    <div id="headerBackground">
+        <h1>Your Images</h1>
+    </div>
+    <!-- The main content -->
+    <main>
+        <style>
+            #edit-row {
+                margin: auto;
+            }
+        </style>
+        <div id="change-password-success" class="alert alert-success container w-20" style="display: none;" role="alert">
+                            <i data-feather="info"></i>
+                            <span></span>
+                        </div>
+        <div class="container card mt-2 mb-5">
+            <p class="text-center text-dark">Account Options:</p>
+            <div id="edit-row" class="row mt-2">
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Log Out"><a
+                            class="text-primary" aria-label="Log Out" id="edit" href="" class="btn" data-toggle="modal"
+                            data-target="#logOut"><i data-feather="log-out"></i></a></span></p>
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Change Password"><a
+                            class="text-success" aria-label="Change Password" id="edit" href="" class="btn"
+                            data-toggle="modal" data-target="#changePassword"><i data-feather="settings"></i></a></span>
+                </p>
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Delete Account"><a
+                            class="text-danger" aria-label="Delete Account" id="edit" href="" class="btn"
+                            data-toggle="modal" data-target="#deleteAccount"><i data-feather="trash-2"></i></a></span></p>
+            </div>
+        </div>
+        <div class="card-columns container">
+            {{#each images}}
+            <div class="card">
+                <img class="card-img-top border" style="max-height: 25rem;" src="/raw/{{file}}" alt="{{caption}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{name}}</h5>
+                    <p class="card-text" style="color: black;">{{caption}}</p>
+                    <a href="/image/{{file_id}}" class="card-link">View</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Uploaded: {{date}}</small>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        {{!--Log Out Model --}}
+        <div class="modal fade" id="logOut" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+            aria-labelledby="logOutLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logOutLabel">Log Out?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/auth/logout" method="post">
+                        <div class="modal-body">
+                            <p style="color: black;">Are you sure you want to logout?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Log Out</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{!-- Change Password --}}
+        <div class="modal fade" id="changePassword" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            role="dialog" aria-labelledby="changePasswordLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{!-- The form for the edit image. --}}
+                    <form action="/auth/change-password" method="post" class="needs-validation" novalidate>
+                        <div id="change-password-error" class="alert alert-danger container w-20" style="display: none;" role="alert">
+                            <i data-feather="alert-circle"></i>
+                            <span>An error has occured!</span>
+                        </div>
+                        <div class="modal-body">
+                            <label>Current Password:</label>
+                            <input class="form-control" type="password" name="current_password" id="current-password"
+                                required />
+                            <div class="invalid-feedback">
+                                Please enter in your current password.
+                            </div>
+                            <label>New Password:</label>
+                            <input class="form-control" type="password" name="new_password" id="new-password"
+                                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required />
+                            <div class="invalid-feedback">
+                                Please enter in a password with at least an uppercase and 8 characters long.
+                            </div>
+                            <label>Confirm New Password:</label>
+                            <input class="form-control" type="password" name="confirm_new_password"
+                                id="confirm-new-password" required />
+                            <div class="invalid-feedback">
+                                Please confirm your password.
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Delete Account --}}
+        <div class="modal fade" id="deleteAccount" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            role="dialog" aria-labelledby="deleteAccountLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountLabel">Delete Account</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{!-- The form for the edit image. --}}
+                    <form action="/auth/delete-account" method="post" class="needs-validation" novalidate>
+                        <div id="delete-account-error" class="alert alert-danger container w-20" style="display: none;" role="alert">
+                            <i data-feather="alert-circle"></i>
+                            <span>An error has occured!</span>
+                        </div>
+                        <div class="modal-body">
+                            <p style="color: black;">Are you sure you want to delete your account? All your images will be deleted. This action <strong>cannot</strong> be
+                            undone.</p>
+                            <label>Confirm Password:</label>
+                            <input class="form-control" type="password" name="confirm_password" id="confirm-password"
+                                required />
+                            <div class="invalid-feedback">
+                                Please enter in your password to delete your account.
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    {{> footer}}
+
+    <!-- The JavaScripts -->
+    <script src="/js/profile.js"></script>
+    <script src="/feather.min.js"></script>
+    <script>
+        feather.replace({ width: '30', height: '30', 'stroke-width': '1' });
+        $(() => {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+
+</html>

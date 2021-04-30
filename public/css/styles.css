@@ -1,0 +1,40 @@
+/* 
+    Generic Styles
+    Used on all pages.
+    Contains footer styles
+*/
+
+/* Display the footer as a grid */
+footer {
+    color: var(--main-text-color);
+    background-color: var(--footer-background-color);
+    padding: 20px 0px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+footer select {
+    background-color: var(--secondary-background-color) !important;
+    color: var(--main-text-color) !important;
+}
+
+/* Removes padding and margin from the body. */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}

@@ -1,0 +1,72 @@
+/**
+* Color Configuration
+*/
+
+:root{
+    --main-color: #11b611;
+    --main-color-hover: rgb(21, 129, 21);
+    --main-text-color: black;
+    
+    --background-color:white;
+    --news-background-color: white;
+    --secondary-background-color: rgb(235, 233, 233);
+    --foucs-secondary-background-color: white;
+
+    --footer-background-color: rgb(151, 151, 151);
+}
+
+/**
+* STOP: This area should not be edited!
+*
+* Custom css styles to use the variable described above.
+*/
+.main-color{
+    background-color: var(--main-color);
+}
+
+.main-color-text{
+    color: var(--main-color);
+}
+
+.main-color-text-hover:hover{
+    color: var(--main-color-hover);
+}
+
+.btn-theme:hover{
+    background-color: var(--main-color-hover);
+}
+
+.btn-theme:focus{
+    background-color: var(--main-color-hover) !important;
+}
+
+.txt-color{
+    color: var(--main-text-color);
+}
+
+nav#navbar{
+    background-color: var(--background-color);
+}
+
+p {
+    color: var(--main-text-color);
+}
+
+body{
+    background-color: var(--secondary-background-color);
+}
+
+div#headerBackground{
+    background-color: rgb(32, 32, 32);
+}
+
+h2{
+    color: var(--main-color);
+}
+
+.bg-first{
+ background-color: var(--background-color);   
+}
+.bg-second{
+    background-color: var(--secondary-background-color);
+}

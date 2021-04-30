@@ -1,0 +1,123 @@
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login {{#if isRegistrationAllowed}}/ Signup{{/if}} | Ryandw11 Images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Login to Ryandw11 Images." />
+    <!-- The Generic CSS Styles -->
+    {{> common_css}}
+    <!-- Page Specifc CSS Style Pages -->
+    <link rel="stylesheet" href="/css/page_styles/index.css">
+    <link rel="stylesheet" href="/css/page_styles/login.css">
+    <link rel="icon" href="/images/favicon.png" type="image/png" sizes="16x16">
+</head>
+
+<body>
+    {{>head}}
+    <style>
+        form {
+            width: 50%;
+            margin: auto;
+        }
+
+        #submit {
+            display: block;
+            width: 100px;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .login-input {
+            color: var(--main-text-color);
+            border: none;
+            border-bottom: 4px solid var(--main-color);
+            background-color: var(--news-background-color) !important;
+        }
+
+        .login-input:focus {
+            color: var(--main-text-color);
+            border: none;
+            border-bottom: 4px solid var(--main-color-hover);
+            background-color: var(--foucs-secondary-background-color) !important;
+        }
+    </style>
+    <!-- The main content -->
+    <main>
+        {{!-- Login --}}
+        <h1>Login</h1>
+        <div id="login-error" style="display: none;" class="alert alert-danger container w-20" role="alert">
+            <i data-feather="alert-circle"></i>
+            <span>An error has occured!</span>
+        </div>
+        <div id="login-success" style="display: none;" class="alert alert-success container w-20" role="alert">
+            <i data-feather="info"></i>
+            <span></span>
+        </div>
+        <form id="login" action="/auth/login" method="post" class="container needs-validation" novalidate>
+            <label for="username" class="txt-color">Username:</label>
+            <input name="username" id="username" type="text" class="form-control login-input" required />
+            <div class="invalid-feedback">
+                Please enter in a username.
+            </div>
+            <label for="password" class="txt-color">Password:</label>
+            <input name="password" type="password" class="form-control login-input" required  />
+            <div class="invalid-feedback">
+                Please enter in a password.
+            </div>
+            <input type="submit" value="Login" id="submit" class="btn btn-success" />
+        </form>
+        {{!-- Sign Up: This needs to be enabled in the envrionments.json file. --}}
+        {{#if isRegistrationAllowed}}
+        <h1>Sign Up</h1>
+        <div id="signup-error" style="display: none;" class="alert alert-danger container w-20" role="alert">
+            <i data-feather="alert-circle"></i>
+            <span>An error has occured!</span>
+        </div>
+        <form id="signup" action="/auth/signup" method="post" class="container needs-validation" novalidate>
+            <label for="username" class="txt-color">Username:</label>
+            <input name="username" id="username" type="text" class="form-control login-input" required  />
+            <div class="invalid-feedback">
+                Please enter in a username.
+            </div>
+            <label for="password" class="txt-color">Password:</label>
+            <input name="password" type="password" class="form-control login-input" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required  />
+            <div class="invalid-feedback">
+                Please enter in a password with at least an uppercase and 8 characters long.
+            </div>
+            <label for="password" class="txt-color">Confirm Password:</label>
+            <input name="confirm_password" type="password" class="form-control login-input" required />
+            <div class="invalid-feedback">
+                Please confirm your password.
+            </div>
+            <input type="submit" value="Sign Up" id="submit" class="btn btn-success" />
+        </form>
+        {{/if}}
+    </main>
+
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+    <script src="/feather.min.js"></script>
+    <script>
+        feather.replace({ width: '24', height: '24', 'stroke-width': '1' });
+    </script>
+    <script src="/js/login.js"></script>
+
+    {{> footer}}
+</body>

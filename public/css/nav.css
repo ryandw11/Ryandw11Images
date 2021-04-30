@@ -1,0 +1,291 @@
+/* 
+    The css file for the navigation bar.
+    All pages use this.
+*/
+
+/* Prevents the navicon from displaying (Showing it is handled by javascript) */
+#navicon {
+    display: none;
+}
+
+@media only screen and (min-width: 1400px) {
+    header li .nav-right {
+        float: right;
+        margin: 30px;
+    }
+}
+
+@media only screen and (min-width: 980px) and (max-width: 1400px) {
+    header li .nav-right {
+        float: right;
+        margin-right: 30px;
+        margin-top: 10px;
+    }
+}
+
+
+/* If the The screen is wider than 980 pixels */
+@media only screen and (min-width: 980px) {
+
+    /* Nav bar styles */
+    img#logo {
+        vertical-align: middle;
+        width: 25%;
+    }
+
+    /* Set the ul to inline and remove the bullent points */
+    header ul {
+        display: inline;
+        list-style: none;
+    }
+
+    header li {
+        display: inline;
+        padding: 30px;
+    }
+
+    /* Sets the font to Roboto slong with the size to 1em. */
+    header a {
+        text-decoration: none !important;
+        font-family: 'Roboto', sans-serif;
+        color: var(--main-text-color);
+        font-size: 1em;
+        position: relative;
+    }
+
+    /* If the bar is not active, setup the orange bar under it and add in transitions.*/
+    header a:not(.active)::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        bottom: -4px;
+        background-color: var(--main-color-hover);
+        visibility: hidden;
+        /* Set the scale to zero. */
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        /* transition through everything for 0.3 seconds. */
+        -webkit-transition: all 0.3s ease-in-out 0s;
+        transition: all 0.3s ease-in-out 0s;
+    }
+
+    /* When the link is hovered over. */
+    header a:not(.active):hover::before {
+        /* Show the bar. */
+        visibility: visible;
+        /* Scales it back down when the mouse is move off of it. */
+        -webkit-transform: scaleX(1);
+        transform: scaleX(1);
+    }
+
+    header a:hover {
+        color: var(--main-color);
+    }
+
+    header a.active {
+        color: var(--main-color);
+    }
+
+    /* Show the oragne bar when the link is active. */
+    header a.active::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        bottom: -4px;
+        background-color: var(--main-color);
+        visibility: visible;
+    }
+
+    /* Put an rgb(66, 129, 248) border bottom on the nav */
+    header nav {
+        background-color: var(--background-color);
+        /* position: ; */
+        border-bottom: 3px solid var(--main-color);
+    }
+
+    /* Prevent content collapse on the nav. */
+    header nav::after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+}
+
+/* If in (Tablet) mode, put the links on their own line from the logo (It's the same as above the the ul is set as block)*/
+@media only screen and (min-width: 680px) and (max-width: 980px) {
+
+    /* Nav bar styles */
+    img#logo {
+        vertical-align: middle;
+        width: 50%;
+        user-select: none;
+    }
+
+    header ul {
+        display: block;
+        list-style: none;
+    }
+
+    header li {
+        display: inline;
+        padding: 30px;
+    }
+
+    header li .nav-right {
+        float: right;
+        margin-right: 30px;
+    }
+
+    li:first-of-type {
+        padding-left: 5px;
+    }
+
+    header a {
+        text-decoration: none;
+        font-family: 'Roboto', sans-serif;
+        color: var(--main-text-color);
+        font-size: 1em;
+        position: relative;
+    }
+
+    header a:not(.active)::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        bottom: -4px;
+        background-color: var(--main-color);
+        visibility: hidden;
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transition: all 0.3s ease-in-out 0s;
+        transition: all 0.3s ease-in-out 0s;
+    }
+
+    header a:not(.active):hover::before {
+        visibility: visible;
+        -webkit-transform: scaleX(1);
+        transform: scaleX(1);
+    }
+
+    header a:hover {
+        color: var(--main-color-hover);
+    }
+
+    header a.active {
+        color: var(--main-color-hover);
+    }
+
+    header a.active::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        bottom: -4px;
+        background-color: var(--main-color-hover);
+        visibility: visible;
+    }
+
+    header nav {
+        background-color: var(--background-color);
+        /* position: ; */
+        border-bottom: 3px solid var(--main-color);
+    }
+
+    header nav::after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+}
+
+/* If in mobile mode */
+@media only screen and (max-width: 680px) {
+
+    /* Make the logo take up 100% of the width. */
+    img#logo {
+        width: 100%;
+        margin-bottom: -5px;
+        user-select: none;
+    }
+
+    /* Sets the navigation width to 100% so it spans across the entire top. */
+    header>nav {
+        width: 100%;
+        background-color: var(--main-color) !important;
+    }
+
+    header>nav a {
+        /* Removes all of the underlines. */
+        text-decoration: none;
+        background-color: var(--main-color);
+        color: var(--main-text-color);
+    }
+
+    header nav ul {
+        /* Sets the display of flex to unordered list */
+        display: -webkit-flex;
+        display: flex;
+        /* Sets the flow to column with no wrapping. */
+        -webkit-flex-flow: column nowrap;
+        flex-flow: column nowrap;
+        /* Removes the bullet points */
+        list-style-type: none;
+        /* Makes the ul span across the screen */
+        width: 100%;
+        /* Zero out paddings and margins. */
+        padding: 0;
+        margin: 0;
+    }
+
+    header nav li,
+    header nav a {
+        /* Centers the text */
+        text-align: center;
+        /* Sets the width to 100% */
+        width: 100%;
+        /* Makes the link go from an inline to block. */
+        display: block;
+    }
+
+    header li .nav-right {
+        float: none;
+    }
+
+
+    header nav a {
+        /* Adds a padding of 5 around the links. */
+        padding: 5px;
+    }
+
+    header nav a:hover {
+        background-color: var(--main-color-hover);
+        color: var(--main-text-color);
+        text-decoration: none;
+    }
+
+    header nav a.active {
+        background-color: var(--main-color-hover);;
+    }
+}
+
+/* When the image is clicked it rotates 90 degrees */
+#navicon img {
+    width: 10%;
+    transition: transform 0.5s;
+}
+
+#navicon:hover {
+    background-color: var(--main-color-hover);;
+}
+
+#navicon {
+    padding: 0;
+}
+
+/* Added by javascript to rotate the navicon. */
+.rotated {
+    transform: rotate(90deg);
+}

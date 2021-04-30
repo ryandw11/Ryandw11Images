@@ -1,0 +1,200 @@
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{image.name}} | Ryandw11 Images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="View the image {{image.name}} from {{user.user_name}} on Ryandw11 Images." />
+    <!-- The Generic CSS Styles -->
+    {{> common_css}}
+    <!-- Page Specifc CSS Style Pages -->
+    <link rel="stylesheet" href="/css/page_styles/image.css">
+    <link rel="icon" href="/images/favicon.png" type="image/png" sizes="16x16">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="/bootstrap.bundle.min.js"></script>
+    <script src="/clipboard.min.js"></script>
+</head>
+
+<body>
+    {{> head}}
+    <!-- The main content -->
+    <main>
+        <h1>{{image.name}}</h1>
+        <h4 class="txt-color txt-center">Posted By: <a class="main-color-text main-color-text-hover"
+                href="/profile/{{user.user_id}}">{{user.user_name}}</a></h4>
+        <div id="img-cont" class="container bg-first">
+            <img class="img-fluid" src="/raw/{{image.file}}" alt="{{image.caption}}" />
+            <p>{{image.caption}}</p>
+        </div>
+        <div class="container card mt-3 mb-5 pt-2">
+            <div class="input-group mb-2">
+                <input class="form-control" id="copyLink" value="https://img.ryandw11.com/raw/{{image.file}}"
+                    readonly />
+                <div class="input-group-postpend">
+                    <button id="copyBtn" class="btn" data-clipboard-target="#copyLink" data-toggle="tooltip"
+                        data-placement="bottom" title="Copy to clipboard.">
+                        <i data-feather="clipboard"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        {{!-- Show image options for the owner of the image. --}}
+        {{#ifEq user.current_session session.key}}
+        <div class="container card mt-3 mb-5">
+            <div class="row mt-2">
+                <p class="col" style="color: black;">Image Options:</p>
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Edit this image."><a id="edit"
+                            href="" class="btn" data-toggle="modal" data-target="#editImage"><i
+                                data-feather="edit-3"></i></a></span></p>
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Delete this image."><a
+                            id="trash" class="btn" data-toggle="modal" href="" data-target="#deleteImage"><i
+                                data-feather="trash-2"></i></a></span></p>
+            </div>
+        </div>
+        {{/ifEq}}
+
+        {{!-- Admin Options --}}
+        {{#if isAdmin}}
+        <div class="container card mt-3 mb-5">
+            <div class="row mt-2">
+                <p class="col" style="color: black;">Admin Options:</p>
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Edit this image."><a id="edit"
+                            href="" class="btn" data-toggle="modal" data-target="#editImage"><i
+                                data-feather="edit-3"></i></a></span></p>
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Delete this image."><a
+                            id="trash" class="btn" data-toggle="modal" href="" data-target="#deleteImage"><i
+                                data-feather="trash-2"></i></a></span></p>
+            </div>
+        </div>
+        {{/if}}
+
+        {{!-- The modals for the deletion and update: --}}
+        {{#ifEq user.current_session session.key}}
+        <div class="modal fade" id="deleteImage" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            role="dialog" aria-labelledby="deleteImageLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteImageLabel">Confirm Deletion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/handle/delete" method="post">
+                        <div class="modal-body">
+                            <p style="color: black;">Are you sure you want to delete this image?</p>
+                            <input type="hidden" name="img_uuid" value="{{image.uuid}}" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editImage" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+            aria-labelledby="editImageLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editImageLabel">Edit Image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{!-- The form for the edit image. --}}
+                    <form action="/handle/update" method="post">
+                        <div class="modal-body">
+                            <label>Image Name:</label>
+                            <input class="form-control" type="text" name="name" id="image-name" required />
+                            <label>Image Caption:</label>
+                            <textarea class="form-control" name="caption" id="image-caption" rows="3"></textarea>
+                            <input type="hidden" name="img_uuid" value="{{image.uuid}}" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/ifEq}}
+
+        {{!-- Admin Update and Delete Tools --}}
+        {{#if isAdmin}}
+        <div class="modal fade" id="deleteImage" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            role="dialog" aria-labelledby="deleteImageLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteImageLabel">Confirm Admin Deletion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/handle/delete" method="post">
+                        <div class="modal-body">
+                            <p style="color: black;">Are you sure you want to delete this image as an Admin?</p>
+                            <input type="hidden" name="img_uuid" value="{{image.uuid}}" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editImage" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+            aria-labelledby="editImageLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editImageLabel">Admin Edit Image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{!-- The form for the edit image. --}}
+                    <form action="/handle/update" method="post">
+                        <div class="modal-body">
+                            <label>Image Name:</label>
+                            <input class="form-control" type="text" name="name" id="image-name" required />
+                            <label>Image Caption:</label>
+                            <textarea class="form-control" name="caption" id="image-caption" rows="3"></textarea>
+                            <input type="hidden" name="img_uuid" value="{{image.uuid}}" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </main>
+
+    {{> footer}}
+
+    <!-- The JavaScripts -->
+    <script src="/feather.min.js"></script>
+    <script>
+        feather.replace({ width: '25', height: '25', 'stroke-width': '1' });
+        $(() => {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+        var clipboard = new ClipboardJS('#copyBtn');
+        clipboard.on('success', (e) => {
+            document.querySelector("#copyBtn").style = "color: green; border: 1px solid green";
+        });
+    </script>
+</body>
+
+</html>

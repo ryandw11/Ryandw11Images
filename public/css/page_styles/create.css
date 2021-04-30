@@ -1,0 +1,51 @@
+/**
+
+    CSS for the upload box.
+
+*/
+
+.upload-box{
+    border: 1px solid var(--main-color);
+}
+
+.invalid-feedback {
+    font-size: 1em;
+}
+
+.upload-box p {
+    margin: 50px 0;
+    color: var(--main-color-hover);
+    text-align: center;
+    user-select: none;
+}
+
+.file-uploader{
+    display: none;
+}
+
+.uploader{
+    display: block;
+    width: 104px;
+    margin: auto;
+}
+
+.submit{
+    display: block;
+    width: 160px;
+    margin: auto;
+}
+
+.deleteFile{
+    cursor: pointer;
+}
+
+.invalid-feedback{
+    display: inline !important;
+}
+
+.file-display{
+    flex-flow: row;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}

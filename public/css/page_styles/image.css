@@ -1,0 +1,32 @@
+#img-cont img {
+    display: block;
+    margin: auto;
+}
+
+h4{
+    text-align: center;
+}
+
+h1{
+    font-size: 3em;
+    text-align: center;
+    color: var(--main-color);
+}
+.txt-center {
+    text-align: center;
+}
+
+#trash{
+    color: red;
+}
+#trash:hover {
+    color: rgb(126, 1, 1);
+}
+
+#edit {
+    color: green;
+}
+
+#edit:hover {
+    color: rgb(1, 61, 1);
+}
