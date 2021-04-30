@@ -10,6 +10,8 @@ const sqlite3 = require('sqlite3').verbose();
 const compression = require('compression');
 const helmet = require('helmet');
 
+const redis = require('redis');
+
 if (!debug) {
     // Activate SSL for Ryandw11.com
     const https = require('https');
@@ -64,10 +66,18 @@ if (!debug) {
     app.use(compression());
 }
 
+// let RedisStore = require('connect-redis')(session);
+// let redisClient = redis.createClient();
+
 app.use(session({
     secret: 'a^fewfjwiofh-6Jfjsc&3+mca**fj4$$mcsjiog#4$',
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: true,
+    // Two Weeks
+    cookie: {
+        maxAge: 1.21e+9
+    }
+    // store: new RedisStore({ client: redisClient }),
 }));
 
 app.use(express.urlencoded({ extended: true }));

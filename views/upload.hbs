@@ -19,24 +19,30 @@
     </div>
     <!-- The main content -->
     <main class="container">
+        <div id="upload-error" class="alert alert-danger container w-20 mt-2" style="display: none;" role="alert">
+            <i data-feather="alert-circle"></i>
+            <span>An error has occured when uploading images.</span>
+        </div>
         {{#if session.loggedin}}
-            <form action="/handle/upload" enctype="multipart/form-data" method="post" id="upload-image" class="needs-validation" novalidate>
-                <label class="txt-color" for="">Upload image(s) to Ryandw11 Images:</label>
-                <div class="upload-box container">
-                    <p><i data-feather="download"></i><br>Drop any file(s) here to upload!</p>
-                </div>
-                <button type="button" class="uploader btn btn-primary mt-3">Select Files</button>
-                <input type="file" name="fileImage" id="files" class="file-uploader" accept=".png,.jpg,.jpeg,.gif" multiple required />
-                <div class='invalid-feedback'></div>
-                <h2>Uploaded Files:</h2>
-                <div class="file-display"></div>
-                <input id="submit" type="submit" value="Upload Images" class="btn btn-success mt-3 submit" />
-            </form>
-        {{else}}
-            <div id="signup-error" class="alert alert-danger container w-20 mt-5" role="alert">
-                <i data-feather="alert-circle"></i>
-                You must be logged in to upload images!
+        <form action="/handle/upload" enctype="multipart/form-data" method="post" id="upload-image"
+            class="needs-validation" novalidate>
+            <label class="txt-color" for="">Upload image(s) to Ryandw11 Images:</label>
+            <div class="upload-box container">
+                <p><i data-feather="download"></i><br>Drop any file(s) here to upload!</p>
             </div>
+            <button type="button" class="uploader btn btn-primary mt-3">Select Files</button>
+            <input type="file" name="fileImage" id="files" class="file-uploader" accept=".png,.jpg,.jpeg,.gif" multiple
+                required />
+            <div class='invalid-feedback'></div>
+            <h2>Uploaded Files:</h2>
+            <div class="file-display"></div>
+            <input id="submit" type="submit" value="Upload Images" class="btn btn-success mt-3 submit" />
+        </form>
+        {{else}}
+        <div id="signup-error" class="alert alert-danger container w-20 mt-5" role="alert">
+            <i data-feather="alert-circle"></i>
+            You must be logged in to upload images!
+        </div>
         {{/if}}
     </main>
 
@@ -44,6 +50,7 @@
 
     <!-- The JavaScripts -->
     <script src="/js/create.js"></script>
+    <script src="/js/upload.js"></script>
     <script src="/feather.min.js"></script>
     <script>
         feather.replace({ width: '65', height: '65', 'stroke-width': '1' });

@@ -45,18 +45,18 @@ window.addEventListener('load', () => {
 });
 
 window.addEventListener('load', () => {
-        const url = new URL(location.href);
-        const err = url.searchParams.get('suc');
-        const errorDoc = document.getElementById('login-success');
-        if (err == null) return;
-        switch (err) {
-            case '1':
-                errorDoc.getElementsByTagName('span')[0].textContent = 'Successfully logged out!';
-                errorDoc.style.display = 'block';
-                break;
-            case '2':
-                errorDoc.getElementsByTagName('span')[0].textContent = 'Account was sucessfully deleted.';
-                errorDoc.style.display = 'block';
-                break;
-        }
-    });
+    const url = new URL(location.href);
+    const err = url.searchParams.get('suc');
+    const errorDoc = document.getElementById('login-success');
+    if (err == null) return;
+    switch (err) {
+        case '1':
+            errorDoc.getElementsByTagName('span')[0].textContent = 'Successfully logged out!';
+            errorDoc.style.display = 'block';
+            break;
+        case '2':
+            errorDoc.getElementsByTagName('span')[0].textContent = 'Account was sucessfully deleted.';
+            errorDoc.style.display = 'block';
+            break;
+    }
+});

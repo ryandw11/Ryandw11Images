@@ -92,7 +92,6 @@ module.exports = (db, environment) => {
                         req.session.username = username;
                         req.session.loggedin = true;
                         req.session.key = session;
-
                         res.redirect('/');
                     });
                 }
@@ -163,6 +162,7 @@ module.exports = (db, environment) => {
                         req.session.key = null;
                         req.session.loggedin = false;
                         req.session.username = null;
+                        req.session.destroy(() => {});
                         res.redirect('/login?suc=1');
                         return;
                     }
