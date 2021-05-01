@@ -106,9 +106,9 @@ module.exports = (db, environment) => {
                     let file_id = files[i].filename.split('.')[0];
 
                     // Detect the true file type to prevent just renaming the file.
-                    magic.detectFile("./" + + files[i].path, (err, result) => {
+                    magic.detectFile("./" + files[i].path, (err, result) => {
                         if (!validMimeType(result)) {
-                            fs.unlink("./" + + files[i].path, () => {});
+                            fs.unlink("./" + files[i].path, () => {});
                             return;
                         }
                         db.get(
