@@ -46,7 +46,7 @@ module.exports = (db, environment) => {
                 db.get(`SELECT COUNT(*) FROM images`, (err, count) => {
                     let number = count['COUNT(*)'];
                     // If the current page number is too high, redirect back to index.
-                    if (pageNumber > Math.ceil(number / INDEX_IMAGE_AMOUNT)) {
+                    if (pageNumber > Math.ceil(number / INDEX_IMAGE_AMOUNT) && Math.ceil(number / INDEX_IMAGE_AMOUNT) != 0) {
                         res.redirect('/');
                         return;
                     }
