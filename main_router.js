@@ -11,6 +11,8 @@ const {v4: uuid} = require('uuid');
 const INDEX_IMAGE_AMOUNT = 30;
 
 function getThemeNumber(req) {
+    if(req.session == null || req.session == undefined)
+        return 0;
     if (req.session.theme != null) {
         return req.session.theme;
     }
