@@ -26,6 +26,18 @@ body>div>h1 {
     line-height: 400px;
 }
 
+/* Change the size based upon the mobile version */
+@media only screen and (max-width: 600px) {
+    body>div>h1 {
+        text-align: center;
+        color: white;
+        font-size: 3em;
+        margin: 0;
+        height: 400px;
+        line-height: 400px;
+    }
+}
+
 div#headerBackground {
     /* background-image: url('/images/about.png'); */
     background-color: rgb(26, 68, 26);

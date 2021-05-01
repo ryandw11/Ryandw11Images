@@ -14,5 +14,6 @@ function isUserAdmin(user_id) {
 module.exports = {
     isRegistrationAllowed: json['registration'],
     isUserAdmin: isUserAdmin,
-    admins: json['admins']
+    admins: json['admins'],
+    debug: json['debug']
 };

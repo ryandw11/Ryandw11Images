@@ -1,19 +1,15 @@
-const debug = false;
-
 const express = require('express');
 const session = require('express-session');
 const app = express();
 const fs = require('fs');
-const md5 = require('md5');
-const { v4: uuid } = require('uuid');
 const sqlite3 = require('sqlite3').verbose();
 const compression = require('compression');
 const helmet = require('helmet');
 
-const redis = require('redis');
+const environment = require('./environment.js');
 
-if (!debug) {
-    // Activate SSL for Ryandw11.com
+if (!environment.debug) {
+    // Activate SSL for img.ryandw11.com
     const https = require('https');
     const privateKey = fs.readFileSync('../privkey.pem', 'utf8');
     const certificate = fs.readFileSync('../fullchain.pem', 'utf8');
@@ -61,9 +57,13 @@ app.set('view engine', 'hbs');
 
 app.use(express.static(__dirname + '/public'));
 
-if (!debug) {
+if (!environment.debug) {
     app.enable('view cache');
     app.use(compression());
+}
+
+if(!environment.debug){
+    const redis = require('redis');
 }
 
 // let RedisStore = require('connect-redis')(session);
@@ -75,7 +75,9 @@ app.use(session({
     saveUninitialized: true,
     // Two Weeks
     cookie: {
-        maxAge: 1.21e+9
+        maxAge: 1.21e+9,
+        // Enable secure mode if not in debug.
+        secure: !environment.debug
     }
     // store: new RedisStore({ client: redisClient }),
 }));
@@ -116,8 +118,6 @@ db.serialize(() => {
  *  Setup Routes 
  * 
  */
-
-const environment = require('./environment.js');
 if(environment.isRegistrationAllowed)
     console.log("Running Ryandw11 Images with Registration Allowed!");
 console.log(`There are ${environment.admins.length} admins.`);

@@ -79,3 +79,5 @@ typings/
 data/
 environment.json
 package-lock.json
+
+*.xcf
