@@ -249,7 +249,7 @@ module.exports = (db, environment) => {
      * Show the upload page. This can be seen without an account.
      */
     router.get('/upload', (req, res) => {
-        res.render('upload', {upload: 'active', theme: getThemeNumber(req), session: req.session});
+        res.render('upload', {upload: 'active', theme: getThemeNumber(req), session: req.session, debug: environment.debug});
     });
 
     /**

@@ -14,6 +14,7 @@ function isUserAdmin(user_id) {
 
 /**
  * Run the captcha fetch if debug mode is enabled.
+ * 
  * @param {Number} wantedScore The wanted score.
  * @param {*} req The request from express.
  * @param {Function} successCallback If the return was succesful.

@@ -81,69 +81,79 @@ module.exports = (db, environment) => {
     var upload = multer({storage: storage, fileFilter: fileFilter});
 
     router.post('/upload', upload.array('fileImage', 12), (req, res, next) => {
-        sessioner.validateSession(
-            db,
-            req.session,
+        // Validate the captcha.
+        environment.runCaptchaFetch(
+            0.6,
+            req,
             () => {
-                let files = req.files;
-                let body = req.body;
-                if (files == null || files == undefined) {
-                    res.redirect('/upload?err=1');
-                    return;
-                }
-                if (files.length < 1 || files.length > 13) {
-                    res.redirect('/upload?err=2');
-                    return;
-                }
-                if (body.name.length < files.length || body.caption.length < files.length) {
-                    res.redirect('/upload?err=4');
-                    return;
-                }
-
-                for (let i in files) {
-                    let name = body.name[i];
-                    let caption = body.caption[i];
-                    let file_id = files[i].filename.split('.')[0];
-
-                    // Detect the true file type to prevent just renaming the file.
-                    magic.detectFile("./" + files[i].path, (err, result) => {
-                        if (!validMimeType(result)) {
-                            fs.unlink("./" + files[i].path, () => {});
+                sessioner.validateSession(
+                    db,
+                    req.session,
+                    () => {
+                        let files = req.files;
+                        let body = req.body;
+                        if (files == null || files == undefined) {
+                            res.redirect('/upload?err=1');
                             return;
                         }
-                        db.get(
-                            'SELECT (user_id) FROM users WHERE current_session = $session',
-                            {
-                                $session: req.session.key,
-                            },
-                            (err, row) => {
-                                if (row == null) return;
-                                db.run(
-                                    `INSERT INTO images (file_id, uuid, name, caption, author_id, file) VALUES ($file_id, $uuid, $name, $caption, $author_id, $file)`,
+                        if (files.length < 1 || files.length > 13) {
+                            res.redirect('/upload?err=2');
+                            return;
+                        }
+                        if (body.name.length < files.length || body.caption.length < files.length) {
+                            res.redirect('/upload?err=4');
+                            return;
+                        }
+
+                        for (let i in files) {
+                            let name = body.name[i];
+                            let caption = body.caption[i];
+                            let file_id = files[i].filename.split('.')[0];
+
+                            // Detect the true file type to prevent just renaming the file.
+                            magic.detectFile('./' + files[i].path, (err, result) => {
+                                if (!validMimeType(result)) {
+                                    fs.unlink('./' + files[i].path, () => {});
+                                    return;
+                                }
+                                db.get(
+                                    'SELECT (user_id) FROM users WHERE current_session = $session',
                                     {
-                                        $file_id: file_id,
-                                        $uuid: uuid(),
-                                        $name: name,
-                                        $caption: caption,
-                                        $author_id: row.user_id,
-                                        $file: files[i].filename,
+                                        $session: req.session.key,
+                                    },
+                                    (err, row) => {
+                                        if (row == null) return;
+                                        db.run(
+                                            `INSERT INTO images (file_id, uuid, name, caption, author_id, file) VALUES ($file_id, $uuid, $name, $caption, $author_id, $file)`,
+                                            {
+                                                $file_id: file_id,
+                                                $uuid: uuid(),
+                                                $name: name,
+                                                $caption: caption,
+                                                $author_id: row.user_id,
+                                                $file: files[i].filename,
+                                            }
+                                        );
                                     }
                                 );
-                            }
-                        );
-                    });
-                    // End of Magic Mime type detection.
-                }
+                            });
+                            // End of Magic Mime type detection.
+                        }
 
-                req.files = null;
-                body.name = null;
-                body.caption = null;
+                        req.files = null;
+                        body.name = null;
+                        body.caption = null;
 
-                res.redirect('/');
-                next();
+                        res.redirect('/');
+                        next();
+                    },
+                    () => {
+                        res.redirect('/upload?err=3');
+                    }
+                );
             },
             () => {
-                res.redirect('/upload?err=3');
+                res.redirect('/upload?err=5');
             }
         );
     });

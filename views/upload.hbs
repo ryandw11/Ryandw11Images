@@ -36,7 +36,14 @@
             <div class='invalid-feedback'></div>
             <h2>Uploaded Files:</h2>
             <div class="file-display"></div>
-            <input id="submit" type="submit" value="Upload Images" class="btn btn-success mt-3 submit" />
+            
+            
+            {{#if debug}}
+            <input id="uploadSubmit" type="submit" value="Upload Images" class="btn btn-success mt-3 submit" />
+            {{else}}
+            <button id="uploadSubmit" class="btn btn-success g-recaptcha" data-sitekey="6Lf_WMIaAAAAAEtUMU7-kz5jxLGfrxX0YSZTPPRG"
+                data-callback='onUploadSubmit' data-action='submit'>Upload Images</button>
+            {{/if}}
         </form>
         {{else}}
         <div id="signup-error" class="alert alert-danger container w-20 mt-5" role="alert">
@@ -52,6 +59,12 @@
     <script src="/js/create.js"></script>
     <script src="/js/upload.js"></script>
     <script src="/feather.min.js"></script>
+    {{#if debug}}
+    {{else}}
+    {{#if session.loggedin}}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    {{/if}}
+    {{/if}}
     <script>
         feather.replace({ width: '65', height: '65', 'stroke-width': '1' });
     </script>

@@ -20,5 +20,13 @@ window.addEventListener('load', () => {
             errorDoc.getElementsByTagName('span')[0].textContent = 'Invalid submission. Please try again.';
             errorDoc.style.display = 'block';
             break;
+        case '5':
+            errorDoc.getElementsByTagName('span')[0].textContent = 'Captcha failed. Please try again later.';
+            errorDoc.style.display = 'block';
+            break;
     }
 });
+
+function onUploadSubmit(token) {
+    document.getElementById('upload-image').submit();
+}
