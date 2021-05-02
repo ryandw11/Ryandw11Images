@@ -1,5 +1,6 @@
 {
     "debug": true,
     "registration": true,
-    "admins": []
+    "admins": [],
+    "google-captcha-key": ""
 }

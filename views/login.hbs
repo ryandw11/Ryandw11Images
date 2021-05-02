@@ -60,11 +60,13 @@
                 Please enter in a username.
             </div>
             <label for="password" class="txt-color">Password:</label>
-            <input name="password" type="password" class="form-control login-input" required  />
+            <input name="password" type="password" class="form-control login-input" required />
             <div class="invalid-feedback">
                 Please enter in a password.
             </div>
-            <input type="submit" value="Login" id="submit" class="btn btn-success" />
+            {{!-- <input type="submit" value="Login" id="submit" class="btn btn-success" /> --}}
+            <button id="submit" class="btn btn-success g-recaptcha" data-sitekey="6Lf_WMIaAAAAAEtUMU7-kz5jxLGfrxX0YSZTPPRG"
+                data-callback='onLoginSubmit' data-action='submit'>Login</button>
         </form>
         {{!-- Sign Up: This needs to be enabled in the envrionments.json file. --}}
         {{#if isRegistrationAllowed}}
@@ -75,12 +77,13 @@
         </div>
         <form id="signup" action="/auth/signup" method="post" class="container needs-validation" novalidate>
             <label for="username" class="txt-color">Username:</label>
-            <input name="username" id="username" type="text" class="form-control login-input" required  />
+            <input name="username" id="username" type="text" class="form-control login-input" required />
             <div class="invalid-feedback">
                 Please enter in a username.
             </div>
             <label for="password" class="txt-color">Password:</label>
-            <input name="password" type="password" class="form-control login-input" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required  />
+            <input name="password" type="password" class="form-control login-input"
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required />
             <div class="invalid-feedback">
                 Please enter in a password with at least an uppercase and 8 characters long.
             </div>
@@ -112,12 +115,16 @@
                 });
             }, false);
         })();
+        function onLoginSubmit(token) {
+            document.getElementById("login").submit();
+        }
     </script>
     <script src="/feather.min.js"></script>
     <script>
         feather.replace({ width: '24', height: '24', 'stroke-width': '1' });
     </script>
     <script src="/js/login.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 
     {{> footer}}
 </body>

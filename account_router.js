@@ -102,50 +102,70 @@ module.exports = (db, environment) => {
     router.post('/login', (req, res) => {
         let username = req.body.username;
         let password = req.body.password;
-
-        db.get(
-            `SELECT * FROM users WHERE user_name = $username`,
-            {
-                $username: username,
-            },
-            (err, row) => {
-                if (row == null || row == undefined) {
-                    res.redirect('/login?err=9');
-                    return;
-                }
-                bcrypt.compare(password, row.password, (err, result) => {
-                    if (!result) {
-                        res.redirect('/login?err=10');
-                        return;
-                    }
-                    let session_time = row.session_creation;
-                    if (sessioner.validSessionTime(session_time)) {
-                        req.session.key = row.current_session;
-                        req.session.username = row.user_name;
-                        req.session.loggedin = true;
-                        res.redirect('/');
-                        return;
-                    } else {
-                        let sessionKey = uuid();
-                        db.run(
-                            `UPDATE users SET current_session = $current_session, session_creation = $session_creation WHERE user_id = $user_id`,
-                            {
-                                $user_id: row.user_id,
-                                $current_session: sessionKey,
-                                $session_creation: Date.now(),
-                            },
-                            () => {
-                                req.session.key = sessionKey;
-                                req.session.username = row.user_name;
-                                req.session.loggedin = true;
-                                res.redirect('/');
-                                return;
-                            }
-                        );
-                    }
-                });
+        let key = req.body["g-recaptcha-response"];
+        fetch("https://www.google.com/recaptcha/api/siteverify", {
+            method: 'POST',
+            body: {
+                secret: environment.captcha_seceret,
+                response: key,
             }
-        );
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+            if(!data.success){
+                res.redirect("/login?err11");
+                return;
+            }
+            let score = data.score;
+            if(score < 0.4){
+                res.redirect("/login?err=12");
+                return;
+            }
+
+            db.get(
+                `SELECT * FROM users WHERE user_name = $username`,
+                {
+                    $username: username,
+                },
+                (err, row) => {
+                    if (row == null || row == undefined) {
+                        res.redirect('/login?err=9');
+                        return;
+                    }
+                    bcrypt.compare(password, row.password, (err, result) => {
+                        if (!result) {
+                            res.redirect('/login?err=10');
+                            return;
+                        }
+                        let session_time = row.session_creation;
+                        if (sessioner.validSessionTime(session_time)) {
+                            req.session.key = row.current_session;
+                            req.session.username = row.user_name;
+                            req.session.loggedin = true;
+                            res.redirect('/');
+                            return;
+                        } else {
+                            let sessionKey = uuid();
+                            db.run(
+                                `UPDATE users SET current_session = $current_session, session_creation = $session_creation WHERE user_id = $user_id`,
+                                {
+                                    $user_id: row.user_id,
+                                    $current_session: sessionKey,
+                                    $session_creation: Date.now(),
+                                },
+                                () => {
+                                    req.session.key = sessionKey;
+                                    req.session.username = row.user_name;
+                                    req.session.loggedin = true;
+                                    res.redirect('/');
+                                    return;
+                                }
+                            );
+                        }
+                    });
+                }
+            );
+
+        });
     });
 
     router.post('/logout', (req, res) => {

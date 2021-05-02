@@ -15,5 +15,6 @@ module.exports = {
     isRegistrationAllowed: json['registration'],
     isUserAdmin: isUserAdmin,
     admins: json['admins'],
-    debug: json['debug']
+    debug: json['debug'],
+    captcha_secret: ["google-captcha-key"]
 };
