@@ -41,6 +41,10 @@ window.addEventListener('load', () => {
             loginErrorDoc.getElementsByTagName('span')[0].textContent = 'Your password is incorrect.';
             loginErrorDoc.style.display = 'block';
             break;
+        case '11':
+                loginErrorDoc.getElementsByTagName('span')[0].textContent = 'Captcha failed. Please try again later.';
+                loginErrorDoc.style.display = 'block';
+                break;
     }
 });
 

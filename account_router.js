@@ -103,25 +103,7 @@ module.exports = (db, environment) => {
     router.post('/login', (req, res) => {
         let username = req.body.username;
         let password = req.body.password;
-        let key = req.body["g-recaptcha-response"];
-        fetch("https://www.google.com/recaptcha/api/siteverify", {
-            method: 'POST',
-            body: {
-                secret: environment.captcha_seceret,
-                response: key,
-            }
-        }).then(response => response.json()).then(data => {
-            console.log(data);
-            if(!data.success){
-                res.redirect("/login?err11");
-                return;
-            }
-            let score = data.score;
-            if(score < 0.4){
-                res.redirect("/login?err=12");
-                return;
-            }
-
+        environment.runCaptchaFetch(0.3, req, () => {
             db.get(
                 `SELECT * FROM users WHERE user_name = $username`,
                 {
@@ -165,7 +147,9 @@ module.exports = (db, environment) => {
                     });
                 }
             );
-
+        }, () => {
+            res.redirect("/login?err=11");
+            return;
         });
     });
 

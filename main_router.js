@@ -196,7 +196,7 @@ module.exports = (db, environment) => {
                 res.redirect('/profile');
             },
             () => {
-                res.render('login', {login: 'active', theme: getThemeNumber(req), isRegistrationAllowed: environment.isRegistrationAllowed});
+                res.render('login', {login: 'active', theme: getThemeNumber(req), isRegistrationAllowed: environment.isRegistrationAllowed, debug: environment.debug});
             }
         );
     });

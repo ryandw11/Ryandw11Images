@@ -20,7 +20,7 @@
             margin: auto;
         }
 
-        #submit {
+        #loginSubmit, #signupSubmit {
             display: block;
             width: 100px;
             margin: auto;
@@ -64,9 +64,13 @@
             <div class="invalid-feedback">
                 Please enter in a password.
             </div>
-            {{!-- <input type="submit" value="Login" id="submit" class="btn btn-success" /> --}}
+            {{!-- If not debug, use google captcha. --}}
+            {{#if debug}}
+            <input type="submit" value="Login" id="loginSubmit" class="btn btn-success" />
+            {{else}}
             <button id="loginSubmit" class="btn btn-success g-recaptcha" data-sitekey="6Lf_WMIaAAAAAEtUMU7-kz5jxLGfrxX0YSZTPPRG"
                 data-callback='onLoginSubmit' data-action='submit'>Login</button>
+            {{/if}}
         </form>
         {{!-- Sign Up: This needs to be enabled in the envrionments.json file. --}}
         {{#if isRegistrationAllowed}}
@@ -124,7 +128,10 @@
         feather.replace({ width: '24', height: '24', 'stroke-width': '1' });
     </script>
     <script src="/js/login.js"></script>
+    {{#if debug}}
+    {{else}}
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    {{/if}}
 
     {{> footer}}
 </body>
