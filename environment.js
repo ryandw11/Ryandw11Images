@@ -42,12 +42,16 @@ function runCaptchaFetch(wantedScore, req, successCallback, invalidCallback) {
             invalidCallback();
             return;
         }
+        if(!data.success){
+            invalidCallback();
+            return;
+        }
         if(data.score < wantedScore){
             invalidCallback();
             return;
         }
         successCallback();
-    }).error(e => invalidCallback());
+    });
 }
 
 module.exports = {
