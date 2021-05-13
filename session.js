@@ -25,6 +25,11 @@
  * @returns void
  */
 function validateSession(db, session, valid_callback, invalid_callback) {
+    if(session == null || session == undefined){
+        invalid_callback();
+        return;
+    }
+
     let sessionKey = session.key;
     if (sessionKey == null) {
         session.loggedin = false;

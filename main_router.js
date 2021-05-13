@@ -38,14 +38,14 @@ module.exports = (db, environment) => {
 
         // Get the latest images starting at the page number and using the max display.
         db.all(
-            `SELECT * FROM images ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`,
+            `SELECT * FROM images WHERE unlisted=0 ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`,
             {
                 $pageNumber: (pageNumber - 1) * INDEX_IMAGE_AMOUNT,
                 $maxDisplay: INDEX_IMAGE_AMOUNT,
             },
             (err, rows) => {
                 // Get the total number of images.
-                db.get(`SELECT COUNT(*) FROM images`, (err, count) => {
+                db.get(`SELECT COUNT(*) FROM images WHERE unlisted=0`, (err, count) => {
                     let number = count['COUNT(*)'];
                     // If the current page number is too high, redirect back to index.
                     if (pageNumber > Math.ceil(number / INDEX_IMAGE_AMOUNT) && Math.ceil(number / INDEX_IMAGE_AMOUNT) != 0) {
@@ -115,8 +115,8 @@ module.exports = (db, environment) => {
 
         let sqlQuery =
             title.length < 1 || title == ''
-                ? `SELECT * FROM images ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`
-                : `SELECT * FROM images WHERE (name LIKE $title) ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`;
+                ? `SELECT * FROM images WHERE unlisted=0 ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`
+                : `SELECT * FROM images WHERE (name LIKE $title) AND unlisted=0 ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`;
         let sqlQueryData =
             title.length < 1 || title == ''
                 ? {
@@ -132,7 +132,7 @@ module.exports = (db, environment) => {
         // Get the latest images starting at the page number and using the max display.
         db.all(sqlQuery, sqlQueryData, (err, rows) => {
             // Get the total number of images.
-            db.get('SELECT COUNT(*) FROM images WHERE (name LIKE $title)', {$title: `%${title}%`}, (err, count) => {
+            db.get('SELECT COUNT(*) FROM images WHERE (name LIKE $title) AND (unlisted=0)', {$title: `%${title}%`}, (err, count) => {
                 let number = count['COUNT(*)'];
                 // The array of page numbers.
                 let pages = [];
@@ -394,8 +394,10 @@ module.exports = (db, environment) => {
                         { $current_session: req.session.key}, (err, adminRow) => {
                             // If the user is an admin.
                             let admin = environment.isUserAdmin(adminRow.user_id);
+                            // Show admins unlisted images.
+                            let query = admin ? `SELECT * FROM images WHERE author_id = $id` : `SELECT * FROM images WHERE author_id = $id AND unlisted = 0`;
                             db.all(
-                                `SELECT * FROM images WHERE author_id = $id`,
+                                query,
                                 {
                                     $id: usrRow.user_id,
                                 },
@@ -422,7 +424,7 @@ module.exports = (db, environment) => {
                         }
 
                         db.all(
-                            `SELECT * FROM images WHERE author_id = $id`,
+                            `SELECT * FROM images WHERE author_id = $id AND unlisted = 0`,
                             {
                                 $id: usrRow.user_id,
                             },

@@ -106,8 +106,13 @@ module.exports = (db, environment) => {
                         }
 
                         for (let i in files) {
+                            // Define and validate file data.
                             let name = body.name[i];
+                            if(name.length > 30) continue;
                             let caption = body.caption[i];
+                            if(caption.length > 1000) continue;
+                            let unlisted = body.unlistedImage[i] == undefined ? 0 : 1;
+
                             let file_id = files[i].filename.split('.')[0];
 
                             // Detect the true file type to prevent just renaming the file.
@@ -124,12 +129,13 @@ module.exports = (db, environment) => {
                                     (err, row) => {
                                         if (row == null) return;
                                         db.run(
-                                            `INSERT INTO images (file_id, uuid, name, caption, author_id, file) VALUES ($file_id, $uuid, $name, $caption, $author_id, $file)`,
+                                            `INSERT INTO images (file_id, uuid, name, caption, unlisted, author_id, file) VALUES ($file_id, $uuid, $name, $caption, $unlisted, $author_id, $file)`,
                                             {
                                                 $file_id: file_id,
                                                 $uuid: uuid(),
                                                 $name: name,
                                                 $caption: caption,
+                                                $unlisted: unlisted,
                                                 $author_id: row.user_id,
                                                 $file: files[i].filename,
                                             }
@@ -270,6 +276,67 @@ module.exports = (db, environment) => {
                                 });
 
                                 res.redirect('/');
+                                return;
+                            }
+                        );
+                    }
+                );
+            },
+            () => {
+                res.redirect('/');
+            }
+        );
+    });
+
+    router.post('/unlisted', (req, res) => {
+        let uuid = req.body.img_uuid;
+        let unlisted = parseInt(req.body.unlistedValue);
+
+        if (uuid == null) {
+            res.redirect('/');
+            return;
+        }
+
+        if (unlisted !== 0 && unlisted !== 1) {
+            res.redirect('/');
+            return;
+        }
+
+        sessioner.validateSession(
+            db,
+            req.session,
+            () => {
+                db.get(
+                    `SELECT * FROM images WHERE uuid=$uuid`,
+                    {
+                        $uuid: uuid,
+                    },
+                    (err, imageRow) => {
+                        if (imageRow == null) {
+                            res.redirect('/');
+                            return;
+                        }
+
+                        db.get(
+                            `SELECT user_name, user_id FROM users WHERE current_session = $current_session`,
+                            {
+                                $current_session: req.session.key,
+                            },
+                            (err, userRow) => {
+                                if (userRow == null) {
+                                    res.redirect('/image/' + imageRow.file_id);
+                                    return;
+                                }
+                                let isAdmin = environment.isUserAdmin(userRow.user_id);
+                                if (imageRow.author_id !== userRow.user_id && !isAdmin) {
+                                    res.redirect('/image/' + imageRow.file_id);
+                                    return;
+                                }
+                                db.run(`UPDATE images SET unlisted = $unlisted WHERE uuid = $uuid`, {
+                                    $unlisted: unlisted,
+                                    $uuid: uuid,
+                                });
+                                res.redirect('/image/' + imageRow.file_id);
                                 return;
                             }
                         );

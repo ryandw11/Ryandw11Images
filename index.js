@@ -1,3 +1,5 @@
+const version_id = "1.0.1";
+
 const express = require('express');
 const session = require('express-session');
 const app = express();
@@ -98,6 +100,7 @@ db.serialize(() => {
         uuid VARCHAR(40) NOT NULL,
         name VARCHAR(40) NOT NULL,
         caption VARCHAR(100) NOT NULL,
+        unlisted INTEGER NOT NULL,
         author_id VARCHAR(40) NOT NULL,
         file VARCHAR(40) NOT NULL,
         date DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -111,7 +114,34 @@ db.serialize(() => {
         session_creation BIGINT,
         date DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
+    db.run(`CREATE TABLE IF NOT EXISTS 'Ryandw11Images' (
+        id INTEGER PRIMARY KEY,
+        version_id VARCHAR(40) NOT NULL
+    )`, () => {
+        // Check to see if the table exists.
+        db.all(`SELECT * FROM 'Ryandw11Images'`, (err, rows) => {
+            if(rows.length < 1){
+                // Insert the current version number into the table.
+                db.run(`INSERT INTO 'Ryandw11Images' (version_id) VALUES ('${version_id}')`);
+            }
+        })
+    });
+    // Check to see if private exists. If it does not, add it.
+    // TODO:: Remove this after a few versions.
+    db.get(`SELECT unlisted FROM images`, (err, sel) => {
+        if(sel !== undefined) return;
+        console.log("Detected older version. Updating Database!");
+        db.run(`ALTER TABLE images ADD unlisted INTEGER NOT NULL DEFAULT 0`, (err) => {
+            if(err != null){
+                console.log("Fatal error occured! Could not update database!");
+                console.log(err);
+                return;
+            }
+            console.log("Updated database to the recent version!");
+        });
+    })
 });
+
 
 
 /*

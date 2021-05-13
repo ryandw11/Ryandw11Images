@@ -36,13 +36,14 @@
             <div class='invalid-feedback'></div>
             <h2>Uploaded Files:</h2>
             <div class="file-display"></div>
-            
-            
+
+
             {{#if debug}}
             <input id="uploadSubmit" type="submit" value="Upload Images" class="btn btn-success mt-3 submit" />
             {{else}}
-            <button id="uploadSubmit" class="btn btn-success submit g-recaptcha" data-sitekey="6Lf_WMIaAAAAAEtUMU7-kz5jxLGfrxX0YSZTPPRG"
-                data-callback='onUploadSubmit' data-action='submit'>Upload Images</button>
+            <button id="uploadSubmit" class="btn btn-success submit g-recaptcha"
+                data-sitekey="6Lf_WMIaAAAAAEtUMU7-kz5jxLGfrxX0YSZTPPRG" data-callback='onUploadSubmit'
+                data-action='submit'>Upload Images</button>
             {{/if}}
         </form>
         {{else}}

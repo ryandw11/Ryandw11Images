@@ -52,6 +52,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{name}}</h5>
                     <p class="card-text" style="color: black;">{{caption}}</p>
+                    {{#ifEq unlisted 1}}<p class="text-warning"><i data-feather="eye-off" width="25"></i> This image is marked as unlisted!</p>{{/ifEq}}
                     <a href="/image/{{file_id}}" class="card-link">View</a>
                 </div>
                 <div class="card-footer">

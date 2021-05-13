@@ -30,3 +30,11 @@ h1{
 #edit:hover {
     color: rgb(1, 61, 1);
 }
+
+#unlisted {
+    color: rgb(83, 83, 248);
+}
+
+#unlisted:hover {
+    color: rgb(0, 0, 245);
+}
