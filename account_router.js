@@ -123,6 +123,8 @@ module.exports = (db, environment) => {
                             req.session.key = row.current_session;
                             req.session.username = row.user_name;
                             req.session.loggedin = true;
+                            // An admin flag exists for visual purposes.
+                            req.session.isAdmin = environment.isUserAdmin(row.user_id);
                             res.redirect('/');
                             return;
                         } else {
@@ -138,6 +140,8 @@ module.exports = (db, environment) => {
                                     req.session.key = sessionKey;
                                     req.session.username = row.user_name;
                                     req.session.loggedin = true;
+                                    // An admin flag exists for visual purposes.
+                                    req.session.isAdmin = environment.isUserAdmin(row.user_id);
                                     res.redirect('/');
                                     return;
                                 }

@@ -6,6 +6,7 @@
             <li><a href="/" class="{{index}}">Browse</a></li>
             <li><a href="/search" class="{{search}}">Search</a></li>
             <li><a href="/upload" class="{{upload}}">Upload</a></li>
+            {{#if session.isAdmin}}<li><a href="/admin/users" class="{{admin_users}}"><i color="red" width="20" data-feather="shield"></i> Users</a></li>{{/if}}
             {{#if session.loggedin}}
             <li><a href="/profile" class="nav-right {{login}}">{{session.username}}</a></li>
             {{else}}
