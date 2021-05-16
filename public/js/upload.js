@@ -24,6 +24,10 @@ window.addEventListener('load', () => {
             errorDoc.getElementsByTagName('span')[0].textContent = 'Captcha failed. Please try again later.';
             errorDoc.style.display = 'block';
             break;
+        case '6':
+                errorDoc.getElementsByTagName('span')[0].textContent = 'You cannot upload more than 12 images at once!';
+                errorDoc.style.display = 'block';
+                break;
     }
 });
 

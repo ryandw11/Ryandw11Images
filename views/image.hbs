@@ -75,10 +75,20 @@
         {{#if isAdmin}}
         <div class="container card mt-3 mb-5">
             <div class="row mt-2">
-                <p class="col" style="color: black;">Admin Options:</p>
+                <p class="col" style="color: black;"><i color="red" data-feather="shield"></i> Admin Options:</p>
                 <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Edit this image."><a id="edit"
                             href="" class="btn" data-toggle="modal" data-target="#editImage"><i
                                 data-feather="edit-3"></i></a></span></p>
+                 {{#ifEq image.unlisted 0}}
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Make image unlisted."><a id="unlisted"
+                            href="" class="btn" data-toggle="modal" data-target="#adminUnlistedImage"><i
+                                data-feather="eye-off"></i></a></span></p>
+                {{/ifEq}}
+                {{#ifEq image.unlisted 1}}
+                <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Make image listed."><a id="unlisted"
+                            href="" class="btn" data-toggle="modal" data-target="#adminUnlistedImage"><i
+                                data-feather="eye"></i></a></span></p>
+                {{/ifEq}}
                 <p class="col"><span data-toggle="tooltip" data-placement="bottom" title="Delete this image."><a
                             id="trash" class="btn" data-toggle="modal" href="" data-target="#deleteImage"><i
                                 data-feather="trash-2"></i></a></span></p>
@@ -169,6 +179,7 @@
 
         {{!-- Admin Update and Delete Tools --}}
         {{#if isAdmin}}
+        {{!-- Admin Delete --}}
         <div class="modal fade" id="deleteImage" data-backdrop="static" data-keyboard="false" tabindex="-1"
             role="dialog" aria-labelledby="deleteImageLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -192,7 +203,7 @@
                 </div>
             </div>
         </div>
-
+        {{!-- Admin Edit --}}
         <div class="modal fade" id="editImage" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
             aria-labelledby="editImageLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -215,6 +226,32 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{!-- Admin Unlisted Image --}}
+        <div class="modal fade" id="adminUnlistedImage" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+            aria-labelledby="adminUnlistedImageLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="adminUnlistedImageLabel">Admin Make Image {{#ifEq image.unlisted 0}}Unlisted{{else}}Listed{{/ifEq}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{!-- The form for the admin unlisted image. --}}
+                    <form action="/handle/unlisted" method="post">
+                        <div class="modal-body">
+                            <p style="color: black;">Are you sure that you want to make this image {{#ifEq image.unlisted 0}}unlisted{{else}}listed{{/ifEq}}?</p>
+                            <input type="hidden" name="img_uuid" value="{{image.uuid}}" />
+                            <input type="hidden" name="unlistedValue" value="{{#ifEq image.unlisted 0}}1{{else}}0{{/ifEq}}" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Make {{#ifEq image.unlisted 0}}Unlisted{{else}}Listed{{/ifEq}}</button>
                         </div>
                     </form>
                 </div>

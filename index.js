@@ -8,6 +8,8 @@ const sqlite3 = require('sqlite3').verbose();
 const compression = require('compression');
 const helmet = require('helmet');
 
+const { MulterError } = require('multer');
+
 const environment = require('./environment.js');
 
 if (!environment.debug) {
@@ -160,6 +162,30 @@ app.use('/', main_router(db, environment));
 app.use('/auth', account_router(db, environment));
 app.use('/handle', handler_router(db, environment));
 app.use('/admin', admin_router(db, environment));
+
+// This handles errors within the program.
+app.use((err, req, res, next) => {
+    // If it is a Multer error, redirect to the upload page with an error.
+    if(err instanceof MulterError) {
+        res.redirect("/upload?err=6");
+        return;
+    }
+
+    function getThemeNumber(req) {
+        if(req.session == null || req.session == undefined)
+            return 0;
+        if (req.session.theme != null) {
+            return req.session.theme;
+        }
+        return 0;
+    }
+
+    console.log("A critical error has occured:");
+    console.error(err.stack);
+
+    // Render the error page.
+    res.status(500).render("error", {debug: environment.debug, error: err.stack, session: req.session, theme: getThemeNumber(req)});
+});
 
 app.post('/theme', (req, res) => {
     let data = req.body.theme;

@@ -1,3 +1,10 @@
+/*
+    ===================[Handler Router]===================
+    This handles the routing for any kind of user action for the website.
+    Stuff like uploading and updating image data.
+    ===================[Handler Router]===================
+*/
+
 const express = require('express');
 const router = express.Router();
 const {v4: uuid} = require('uuid');
@@ -20,6 +27,7 @@ function uid() {
 
 /**
  * Get the file extension from the MIME type.
+ * 
  * @param {string} mimetype
  * @returns The file extension.
  */
@@ -36,6 +44,7 @@ function fileTypeFromMimeType(mimetype) {
 
 /**
  * Check if the MIMEType is valid.
+ * 
  * @param {string} mimetype The mime type.
  * @returns If the mime type is valid.
  */
@@ -65,6 +74,14 @@ var storage = multer.diskStorage({
 });
 
 module.exports = (db, environment) => {
+    /**
+     * Filters out the images based upon if the mime type is valid
+     * and the session is valid.
+     *
+     * @param {*} req The request.
+     * @param {*} file The file.
+     * @param {*} cb The function to tell multer what is valid.
+     */
     function fileFilter(req, file, cb) {
         sessioner.validateSession(
             db,
@@ -78,8 +95,31 @@ module.exports = (db, environment) => {
         );
     }
 
-    var upload = multer({storage: storage, fileFilter: fileFilter});
+    var upload = multer({
+        storage: storage,
+        fileFilter: fileFilter,
+        limits: {
+            // 2 MB File Size Limit
+            fileSize: 2e6,
+        },
+    });
 
+    /**
+     * Deletes all the images in a request.
+     *
+     * @param {*} files The files field in the request body.
+     * @returns Nothing.
+     */
+    function deleteImages(files) {
+        if (files == null) return;
+        for (let file of files) {
+            fs.unlink('./' + file.path, () => {});
+        }
+    }
+
+    /**
+     * This handles the response from the upload page.
+     */
     router.post('/upload', upload.array('fileImage', 12), (req, res, next) => {
         // Validate the captcha.
         environment.runCaptchaFetch(
@@ -92,26 +132,41 @@ module.exports = (db, environment) => {
                     () => {
                         let files = req.files;
                         let body = req.body;
+                        // Validate all of the fields.
                         if (files == null || files == undefined) {
                             res.redirect('/upload?err=1');
                             return;
                         }
                         if (files.length < 1 || files.length > 13) {
                             res.redirect('/upload?err=2');
+                            deleteImages(files);
+                            return;
+                        }
+                        if (body.name == null || body.caption == null) {
+                            res.redirect('/upload?err=4');
+                            deleteImages(files);
                             return;
                         }
                         if (body.name.length < files.length || body.caption.length < files.length) {
                             res.redirect('/upload?err=4');
+                            deleteImages(files);
                             return;
                         }
 
                         for (let i in files) {
                             // Define and validate file data.
                             let name = body.name[i];
-                            if(name.length > 30) continue;
+                            if (name.length > 30) {
+                                fs.unlink('./' + files[i].path, () => {});
+                                continue;
+                            }
                             let caption = body.caption[i];
-                            if(caption.length > 1000) continue;
-                            let unlisted = body.unlistedImage[i] == undefined ? 0 : 1;
+                            if (caption.length > 1000) {
+                                fs.unlink('./' + files[i].path, () => {});
+                                continue;
+                            }
+                            // If unlistedImage is null, then no image is unlisted.
+                            let unlisted = body.unlistedImage == null ? 0 : body.unlistedImage[i] == undefined ? 0 : 1;
 
                             let file_id = files[i].filename.split('.')[0];
 
@@ -164,6 +219,9 @@ module.exports = (db, environment) => {
         );
     });
 
+    /**
+     * This handles the response for updating an image.
+     */
     router.post('/update', (req, res) => {
         let uuid = req.body.img_uuid;
         let name = req.body.name;
@@ -229,6 +287,7 @@ module.exports = (db, environment) => {
         );
     });
 
+    // Handles the deletion of an image.
     router.post('/delete', (req, res) => {
         let uuid = req.body.img_uuid;
 
@@ -288,6 +347,7 @@ module.exports = (db, environment) => {
         );
     });
 
+    // Handles the unlisting of an image.
     router.post('/unlisted', (req, res) => {
         let uuid = req.body.img_uuid;
         let unlisted = parseInt(req.body.unlistedValue);

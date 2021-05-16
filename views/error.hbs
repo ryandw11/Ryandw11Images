@@ -1,0 +1,40 @@
+{{!-- This HBS file handles any errors that come up. --}}
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Server Error | Ryandw11 Images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="View user images on Ryandw11 Images.">
+    <!-- The Generic CSS Styles -->
+    {{> common_css}}
+    <!-- Page Specifc CSS Style Pages -->
+    <link rel="stylesheet" href="/css/page_styles/index.css">
+    <link rel="icon" href="/images/favicon.png" type="image/png" sizes="16x16">
+</head>
+
+<body>
+    {{> head}}
+    <div id="headerBackground">
+        <h1>500 Server Error</h1>
+    </div>
+    <!-- The main content -->
+    <main>
+        <section class="mt-5 container">
+            <p style="text-align: center;">It appears a server error has occured. Please try again.</p>
+        </section>
+        {{#if debug}}
+        <section class="alert alert-danger container">
+            <p class="text-danger">Stacktrace:</p>
+            <p class="text-danger">{{error}}</p>
+        </section>
+        {{/if}}
+    </main>
+
+    {{> footer}}
+
+    <!-- The JavaScripts -->
+    <script src="/feather.min.js"></script>
+    <script>
+        feather.replace({ width: '65', height: '65', 'stroke-width': '1' });
+    </script>
+</body>
