@@ -157,10 +157,12 @@ console.log(`There are ${environment.admins.length} admins.`);
 const main_router = require('./main_router.js');
 const account_router = require('./account_router.js');
 const handler_router = require('./handler_router.js');
+const api_router = require('./api_router.js');
 const admin_router = require('./admin_router.js');
 app.use('/', main_router(db, environment));
 app.use('/auth', account_router(db, environment));
 app.use('/handle', handler_router(db, environment));
+app.use('/api/v1', api_router(db, environment));
 app.use('/admin', admin_router(db, environment));
 
 // This handles errors within the program.
