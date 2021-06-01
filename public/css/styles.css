@@ -20,6 +20,19 @@ footer {
     margin-top: auto;
 }
 
+.footerLink {
+    color: green;
+}
+
+.footerLink:hover {
+    color: rgb(78, 223, 78);
+    text-decoration: none;
+}
+
+#footerRow2 {
+    margin-top: -15px;
+}
+
 footer select {
     background-color: var(--secondary-background-color) !important;
     color: var(--main-text-color) !important;
