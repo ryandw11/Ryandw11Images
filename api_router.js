@@ -1,6 +1,8 @@
 /*
 
-    This handles the Developer API
+    This handles the Developer API for Ryandw11 Images.
+
+    View the full documentation at https://docs.ryandw11.com/general/ryandw11-images/rest-api
 
 */
 
@@ -10,6 +12,9 @@ const router = express.Router();
 const MAX_INDEX_IMAGE_AMOUNT = 100;
 
 module.exports = (db, environment) => {
+    /**
+     * Get the list of images in a paged system.
+     */
     router.get('/images', (req, res) => {
         // Handle the page number to ensure that it is a valid number.
         let pageNumber = parseInt(req.query.pge);
@@ -101,6 +106,9 @@ module.exports = (db, environment) => {
         });
     });
 
+    /**
+     * Get the list of images for a specific user.
+     */
     router.get('/images/:user', (req, res) => {
         let user = req.params.user;
         if (user == null || user.length != 36) {
@@ -205,7 +213,9 @@ module.exports = (db, environment) => {
         });
     });
 
-    // Handle the list of users.
+    /**
+     * Get the list of all users (except admins)
+     */
     router.get('/users', (req, res) => {
         let pageNumber = parseInt(req.query.pge);
         if (pageNumber == null || isNaN(pageNumber)) pageNumber = 1;
