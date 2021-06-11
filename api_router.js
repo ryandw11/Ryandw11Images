@@ -9,6 +9,7 @@
 const express = require('express');
 const router = express.Router();
 
+// The maximum amount of images per page a user can request.
 const MAX_INDEX_IMAGE_AMOUNT = 100;
 
 module.exports = (db, environment) => {
