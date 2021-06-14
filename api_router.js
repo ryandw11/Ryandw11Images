@@ -4,6 +4,7 @@
 
     View the full documentation at https://docs.ryandw11.com/general/ryandw11-images/rest-api
 
+    :)
 */
 
 const express = require('express');
