@@ -14,6 +14,16 @@ const router = express.Router();
 const MAX_INDEX_IMAGE_AMOUNT = 100;
 
 module.exports = (db, environment) => {
+
+    /**
+     * 
+     * API method to check if the server is online.
+     * 
+     */
+    router.get('/ping', (req, res) => {
+        res.send("pong");
+    });
+
     /**
      * Get the list of images in a paged system.
      */
