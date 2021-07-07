@@ -33,6 +33,13 @@ footer {
     margin-top: -15px;
 }
 
+/* Fix the developer link on mobile. */
+@media only screen and (max-width: 680px) {
+    #footerRow2 {
+        margin-top: 10px;
+    }
+}
+
 footer select {
     background-color: var(--secondary-background-color) !important;
     color: var(--main-text-color) !important;

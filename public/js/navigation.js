@@ -14,7 +14,8 @@ var active = false;
 var mobileNav = false;
 
 // Add event listeners
-window.addEventListener("load", init);
+// window.addEventListener("load", init);
+init();
 window.addEventListener("resize", res);
 
 // Variables to store the navicon, lists, and the image of the nav icon.

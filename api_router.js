@@ -120,9 +120,13 @@ module.exports = (db, environment) => {
 
     /**
      * Get the list of images for a specific user.
+     * (user) => The UUID of the user.
+     *
+     * 
      */
     router.get('/images/:user', (req, res) => {
         let user = req.params.user;
+        // Make sure the UUID is valid.
         if (user == null || user.length != 36) {
             res.send(`{"error": true, "error_message": "Invalid User UUID.", "images": []}`);
             return;
@@ -136,11 +140,13 @@ module.exports = (db, environment) => {
             return;
         }
 
+        // Make sure the title is valid.
         let title = req.query.title;
         if (title == null || title.length < 1) {
             title = '';
         }
 
+        // Parse the image count and ensure it is valid.
         let imageCount = parseInt(req.query.imgCount);
         if (imageCount == null || isNaN(imageCount)) imageCount = 30;
         if (imageCount < 1) {
@@ -206,6 +212,7 @@ module.exports = (db, environment) => {
                         delete row.id;
                     }
 
+                    // The JSON return.
                     let jsonReturn = {
                         error: false,
                         uuid: user,
@@ -308,7 +315,7 @@ module.exports = (db, environment) => {
                 }
 
                 // Filter out the admins and any rows that still have important information somehow.
-                rows.filter(row => !environment.isUserAdmin(row.user_id) && row.password == null && row.current_session == null);
+                rows = rows.filter(row => !environment.isUserAdmin(row.user_id) && row.password == null && row.current_session == null);
 
                 let jsonReturn = {
                     error: false,

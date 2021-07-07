@@ -8,10 +8,18 @@
     display: none;
 }
 
-@media only screen and (min-width: 1400px) {
+@media only screen and (min-width: 1800px) {
     header li .nav-right {
         float: right;
-        margin: 30px;
+        margin: 27px;
+    }
+}
+
+@media only screen and (min-width: 1400px) and (max-width: 1800px) {
+    header li .nav-right {
+        float: right;
+        margin-right: 30px;
+        margin-top: 20px;
     }
 }
 
@@ -31,6 +39,8 @@
     img#logo {
         vertical-align: middle;
         width: 25%;
+        image-rendering: -webkit-optimize-contrast;
+        transform: translateZ(0);
     }
 
     /* Set the ul to inline and remove the bullent points */
@@ -44,6 +54,11 @@
         padding: 30px;
     }
 
+    header li .nav-right {
+        float: right;
+        margin-right: 30px;
+    }
+
     /* Sets the font to Roboto slong with the size to 1em. */
     header a {
         text-decoration: none !important;
@@ -54,7 +69,7 @@
     }
 
     /* If the bar is not active, setup the orange bar under it and add in transitions.*/
-    header a:not(.active)::before {
+    header a:not(.active, .nohover)::before {
         content: "";
         position: absolute;
         width: 100%;
@@ -71,7 +86,7 @@
     }
 
     /* When the link is hovered over. */
-    header a:not(.active):hover::before {
+    header a:not(.active, .nohover):hover::before {
         /* Show the bar. */
         visibility: visible;
         /* Scales it back down when the mouse is move off of it. */
@@ -79,7 +94,7 @@
         transform: scaleX(1);
     }
 
-    header a:hover {
+    header a:not(.nohover):hover {
         color: var(--main-color);
     }
 
@@ -121,6 +136,7 @@
         vertical-align: middle;
         width: 50%;
         user-select: none;
+        image-rendering: -webkit-optimize-contrast;
     }
 
     header ul {
@@ -142,7 +158,7 @@
         padding-left: 5px;
     }
 
-    header a {
+    header a:not(.nohover) {
         text-decoration: none;
         font-family: 'Roboto', sans-serif;
         color: var(--main-text-color);
@@ -150,7 +166,7 @@
         position: relative;
     }
 
-    header a:not(.active)::before {
+    header a:not(.active, .nohover)::before {
         content: "";
         position: absolute;
         width: 100%;
@@ -164,7 +180,7 @@
         transition: all 0.3s ease-in-out 0s;
     }
 
-    header a:not(.active):hover::before {
+    header a:not(.active, .nohover):hover::before {
         visibility: visible;
         -webkit-transform: scaleX(1);
         transform: scaleX(1);
@@ -207,7 +223,7 @@
     /* Make the logo take up 100% of the width. */
     img#logo {
         width: 100%;
-        margin-bottom: -5px;
+        margin-bottom: 5px;
         user-select: none;
     }
 
@@ -254,13 +270,12 @@
         float: none;
     }
 
-
     header nav a {
         /* Adds a padding of 5 around the links. */
         padding: 5px;
     }
 
-    header nav a:hover {
+    header nav a:not(.nohover):hover {
         background-color: var(--main-color-hover);
         color: var(--main-text-color);
         text-decoration: none;
@@ -278,7 +293,7 @@
 }
 
 #navicon:hover {
-    background-color: var(--main-color-hover);;
+    background-color: var(--main-color-hover);
 }
 
 #navicon {
