@@ -52,7 +52,7 @@
                     <a href="/image/{{file_id}}" class="card-link">View</a>
                 </div>
                 <div class="card-footer">
-                    <small class="text-muted">Uploaded: {{date}}</small>
+                    <small class="text-muted">Uploaded: <span class="time">{{date}}</span></small>
                 </div>
             </div>
             {{/each}}
@@ -127,6 +127,7 @@
     {{> footer}}
 
     <!-- The JavaScripts -->
+    <script src="/js/image_time.js"></script>
     <script src="/feather.min.js"></script>
     {{#if admin}}
     <script src="/js/profile_admin.js"></script>
