@@ -45,7 +45,8 @@
         </div>
         {{else}}
 
-        <table class="table table-dark container">
+        {{!-- The main table for the admin users. The color of the table is based upon the theme. --}}
+        <table class="table {{#ifEq theme 0}}table-dark{{else}}table-light{{/ifEq}} container">
             <thead>
                 <th>Username</th>
                 <th>UUID</th>
@@ -60,7 +61,7 @@
                                 </span>
                             {{/if}}<a href="/profile/{{user_id}}">{{user_name}} {{#ifEq ../session.key current_session}}(You){{/ifEq}}</a> </td>
                         <td>{{user_id}}</td>
-                        <td>{{date}}</td>
+                        <td class="time">{{date}}</td>
                     </tr>
                 {{/each}}
             </tbody>
@@ -99,6 +100,7 @@
     {{> footer}}
 
     <!-- The JavaScripts -->
+    <script src="/js/image_time.js"></script>
     <script src="/feather.min.js"></script>
     <script>
         feather.replace({ width: '20', height: '20', 'stroke-width': '1' });

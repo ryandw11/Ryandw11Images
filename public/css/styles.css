@@ -21,7 +21,7 @@ footer {
 }
 
 .footerLink {
-    color: green;
+    color: var(--footer-color);
 }
 
 .footerLink:hover {

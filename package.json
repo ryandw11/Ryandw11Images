@@ -1,13 +1,13 @@
 {
   "name": "ryandw11images",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The website to handle Ryandw11's images!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ryandw11",
-  "license": "All Rights Reserved",
+  "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "bootstrap": "^4.6.0",

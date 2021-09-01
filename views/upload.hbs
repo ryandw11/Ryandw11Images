@@ -26,7 +26,7 @@
         {{#if session.loggedin}}
         <form action="/handle/upload" enctype="multipart/form-data" method="post" id="upload-image"
             class="needs-validation" novalidate>
-            <label class="txt-color" for="">Upload image(s) to Ryandw11 Images:</label>
+            <p class="text-center mt-5">Upload image(s) to Ryandw11 Images:</p>
             <div class="upload-box container">
                 <p><i data-feather="download"></i><br>Drop any file(s) here to upload!</p>
             </div>
@@ -34,8 +34,10 @@
             <input type="file" name="fileImage" id="files" class="file-uploader" accept=".png,.jpg,.jpeg,.gif" multiple
                 required />
             <div class='invalid-feedback'></div>
-            <h2>Uploaded Files:</h2>
-            <div class="file-display"></div>
+            <h2 class="text-center m-4">Selected Files:</h2>
+            <div class="file-display">
+                <p>No files selected!</p>
+            </div>
 
 
             {{#if debug}}

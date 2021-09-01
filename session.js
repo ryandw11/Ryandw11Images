@@ -34,7 +34,6 @@ function validateSession(db, session, valid_callback, invalid_callback) {
     if (sessionKey == null) {
         session.loggedin = false;
         session.username = null;
-        session.destroy(() => {});
         invalid_callback();
         return;
     }
@@ -105,7 +104,6 @@ function resetSession(session) {
     session.key = null;
     session.loggedin = false;
     session.username = null;
-    session.destroy(() => {});
 }
 
 module.exports = {

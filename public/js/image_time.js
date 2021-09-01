@@ -28,6 +28,6 @@ if (!isIOS()) {
         let dtxt = time.textContent;
         let date = new Date(dtxt);
         if (date.getDate() == undefined || isNaN(date.getDate())) continue;
-        time.textContent = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + "  " + getTimeInHours(date) + ":" + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()) + " " + getAMPM(date);
+        time.textContent = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ";  " + getTimeInHours(date) + ":" + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()) + " " + getAMPM(date);
     }
 }

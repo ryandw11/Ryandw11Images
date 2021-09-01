@@ -64,6 +64,10 @@ function updateFileChange(fileUploader, div) {
         div.appendChild(innerDiv);
         i++;
     }
+
+    if(i < 1) {
+        div.innerHTML = "<p>No files selected!</p>";
+    }
 }
 
 /**
