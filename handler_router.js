@@ -99,8 +99,8 @@ module.exports = (db, environment) => {
         storage: storage,
         fileFilter: fileFilter,
         limits: {
-            // 2 MB File Size Limit
-            fileSize: 2e6,
+            // 3 MB File Size Limit
+            fileSize: 3e6,
         },
     });
 
