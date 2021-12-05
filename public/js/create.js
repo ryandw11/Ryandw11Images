@@ -173,6 +173,12 @@ function checkImageValidity() {
             file.setCustomValidity('A file you uploaded is not an image!');
             return;
         }
+        if(f.size > 3e6) {
+            document.querySelector('#upload-image>.invalid-feedback').innerHTML = 'One of your files is larger than 3MB.';
+            document.querySelector('#upload-image>.invalid-feedback').style.display = 'block';
+            file.setCustomValidity('One of your files is larger than 3MB.');
+            return;
+        }
     }
     file.setCustomValidity();
     file.classList.replace('is-invalid', '');

@@ -25,7 +25,7 @@ window.addEventListener('load', () => {
             errorDoc.style.display = 'block';
             break;
         case '6':
-                errorDoc.getElementsByTagName('span')[0].textContent = 'You cannot upload more than 12 images at once!';
+                errorDoc.getElementsByTagName('span')[0].textContent = 'You have more images than the max amount (12) or one of your images is over 3 MB.';
                 errorDoc.style.display = 'block';
                 break;
     }
