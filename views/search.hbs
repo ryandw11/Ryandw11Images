@@ -45,7 +45,7 @@
         <div class="card-columns container">
             {{#each images}}
             <div class="card">
-                <a href="/image/{{file_id}}"><img class="card-img-top border" style="max-height: 25rem;" src="{{file}}" alt="{{caption}}"></a>
+                <a href="/image/{{file_id}}"><img class="card-img-top border" style="max-height: 25rem;" src="{{file}}" alt="{{caption}}" loading="lazy"></a>
                 <div class="card-body">
                     <h5 class="card-title">{{name}}</h5>
                     <p class="card-text" style="color: black;">{{caption}}</p>
