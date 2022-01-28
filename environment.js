@@ -1,5 +1,5 @@
 const fs = require('fs');
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 var json = JSON.parse(fs.readFileSync('./environment.json', 'utf-8'));
 
