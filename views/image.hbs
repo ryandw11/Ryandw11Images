@@ -136,9 +136,9 @@
                     <form action="/handle/update" method="post">
                         <div class="modal-body">
                             <label>Image Name:</label>
-                            <input class="form-control" type="text" name="name" id="image-name" required />
+                            <input class="form-control" type="text" name="name" id="image-name" value ="{{image.name}}" required />
                             <label>Image Caption:</label>
-                            <textarea class="form-control" name="caption" id="image-caption" rows="3"></textarea>
+                            <textarea class="form-control" name="caption" id="image-caption" rows="3">{{image.caption}}</textarea>
                             <input type="hidden" name="img_uuid" value="{{image.uuid}}" />
                         </div>
                         <div class="modal-footer">
@@ -218,9 +218,9 @@
                     <form action="/handle/update" method="post">
                         <div class="modal-body">
                             <label>Image Name:</label>
-                            <input class="form-control" type="text" name="name" id="image-name" required />
+                            <input class="form-control" type="text" name="name" id="image-name" value="{{image.name}}" required />
                             <label>Image Caption:</label>
-                            <textarea class="form-control" name="caption" id="image-caption" rows="3"></textarea>
+                            <textarea class="form-control" name="caption" id="image-caption" rows="3">{{image.caption}}</textarea>
                             <input type="hidden" name="img_uuid" value="{{image.uuid}}" />
                         </div>
                         <div class="modal-footer">
