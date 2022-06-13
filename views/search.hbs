@@ -40,6 +40,15 @@
             <i data-feather="alert-circle"></i>
             No images with the name were found! Try searching something else.
         </div>
+        {{else}}
+        {{!-- Inform the user of how many results were found. --}}
+        {{#ifEq queryData.title ""}}
+        {{else}}
+        <div id="search-info" class="alert alert-info container w-20" role="alert">
+            <i data-feather="info"></i>
+            Found {{imageCount}} images that match "{{queryData.title}}".
+        </div>
+        {{/ifEq}}
         {{/ifEq}}
 
         <div class="card-columns container">
