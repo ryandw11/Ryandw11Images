@@ -26,7 +26,7 @@ if (!environment.debug) {
 }
 
 // Setup the handlebars template engine.
-const hbs = require('express-handlebars')({
+const hbs = require('express-handlebars').engine({
     defaultLayout: 'main',
     extname: '.hbs',
     helpers: {
