@@ -32,6 +32,7 @@ module.exports = (db, environment) => {
         let pageNumber = parseInt(req.query.pge);
         if (pageNumber == null || isNaN(pageNumber)) pageNumber = 1;
         if (pageNumber < 1) {
+            res.status(400);
             res.send(`{"error": true, "error_message": "Invalid page count.", "images": []}`);
             return;
         }
@@ -44,6 +45,7 @@ module.exports = (db, environment) => {
         let imageCount = parseInt(req.query.imgCount);
         if (imageCount == null || isNaN(imageCount)) imageCount = 30;
         if (imageCount < 1) {
+            res.status(400);
             res.send(`{"error": true, "error_message": "Invalid image count.", "images": []}`);
             return;
         }
@@ -128,6 +130,7 @@ module.exports = (db, environment) => {
         let user = req.params.user;
         // Make sure the UUID is valid.
         if (user == null || user.length != 36) {
+            res.status(400);
             res.send(`{"error": true, "error_message": "Invalid User UUID.", "images": []}`);
             return;
         }
@@ -136,6 +139,7 @@ module.exports = (db, environment) => {
         let pageNumber = parseInt(req.query.pge);
         if (pageNumber == null || isNaN(pageNumber)) pageNumber = 1;
         if (pageNumber < 1) {
+            res.status(400);
             res.send(`{"error": true, "error_message": "Invalid page count.", "images": []}`);
             return;
         }
@@ -150,6 +154,7 @@ module.exports = (db, environment) => {
         let imageCount = parseInt(req.query.imgCount);
         if (imageCount == null || isNaN(imageCount)) imageCount = 30;
         if (imageCount < 1) {
+            res.status(400);
             res.send(`{"error": true, "error_message": "Invalid image count.", "images": []}`);
             return;
         }
@@ -239,6 +244,7 @@ module.exports = (db, environment) => {
         let pageNumber = parseInt(req.query.pge);
         if (pageNumber == null || isNaN(pageNumber)) pageNumber = 1;
         if (pageNumber < 1) {
+            res.status(400);
             res.send(`{"error": true, "error_message": "Invalid page number.", "users": []}`);
             return;
         }
@@ -251,6 +257,7 @@ module.exports = (db, environment) => {
         let imageCount = parseInt(req.query.userCount);
         if (imageCount == null || isNaN(imageCount)) imageCount = 30;
         if (imageCount < 1) {
+            res.status(400);
             res.send(`{"error": true, "error_message": "Invalid user count.", "users": []}`);
             return;
         }
@@ -310,6 +317,7 @@ module.exports = (db, environment) => {
                         delete row.password;
                     }
                 } catch (e) {
+                    res.status(500);
                     res.send(`{"error": true, "error_message": "An internal error has occured.", "users": []}`);
                     return;
                 }
