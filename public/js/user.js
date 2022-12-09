@@ -5,6 +5,7 @@ window.addEventListener('load', () => {
     const usernames = document.querySelectorAll(".user-name-replace");
     for (let username of usernames) {
         const userID = username.textContent;
+        username.textContent = "Loading...";
         fetch(`/api/v1/user/${userID}`).then(val => val.json()).then( data => {
             username.textContent = data.user_name;
         });
