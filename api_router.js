@@ -342,5 +342,27 @@ module.exports = (db, environment) => {
         });
     });
 
+    router.get("/user/:userid", (req, res) => {
+        const userid = req.params.userid;
+        if (userid == null || userid.length != 36) {
+            res.status(404);
+            res.send({user_name: "User Not Found!"});
+            return;
+        }
+
+        db.get('SELECT * FROM users WHERE user_id = $userid', {$userid: userid}, (err, user) => {
+            if(user == null) {
+                res.status(404);
+                res.send({user_name: "User Not Found!"});
+                return;
+            }
+            
+            res.send({
+                user_id: user.user_id,
+                user_name: user.user_name
+            });
+        });
+    });
+
     return router;
 };

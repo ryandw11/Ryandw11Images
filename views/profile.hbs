@@ -51,8 +51,8 @@
                     {{#ifEq unlisted 1}}<p class="text-warning">This image is marked as unlisted!</p>{{/ifEq}}
                     <a href="/image/{{file_id}}" class="card-link">View</a>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded: <span class="time">{{date}}</span></small>
+                <div class="card-footer d-flex" style="font-size: 0.8em;">
+                    <p class="text-muted mb-0">Uploaded: <span class="time">{{date}}</span></p>
                 </div>
             </div>
             {{/each}}

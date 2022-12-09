@@ -33,6 +33,16 @@ footer {
     margin-top: -15px;
 }
 
+/* Pagination Styling */
+.page-item.active .page-link {
+    background-color: var(--main-color-dark);
+    border-color: var(--main-color-dark);
+}
+
+.page-link {
+    color: var(--main-color)
+}
+
 /* Fix the developer link on mobile. */
 @media only screen and (max-width: 680px) {
     #footerRow2 {

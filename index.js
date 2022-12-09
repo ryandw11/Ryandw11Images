@@ -50,6 +50,19 @@ const hbs = require('express-handlebars').engine({
                 return opts.fn(this);
             else
                 return opts.inverse(this);
+        },
+        // Highlights a specific set of characters in a string.
+        surrWord(input, search) {
+            input = input.replace("<", "&lt;").replace(">", "&gt;");
+            let index = input.toLowerCase().indexOf(search.toLowerCase());
+
+            if (index < 0) {
+                return input.slice(0, 200);
+            }
+
+            let sectionOne = Math.max(0, index - 50);
+            let sectionTwo = Math.min(input.length, index + 50);
+            return (sectionOne != 0 ? "..." : "") + input.slice(sectionOne, index) + `<strong>${input.slice(index, index + search.length)}</strong>` + input.slice(index + search.length, sectionTwo) + (sectionTwo != input.length ? "..." : "");
         }
     }
 });
@@ -64,10 +77,6 @@ app.use(express.static(__dirname + '/public'));
 if (!environment.debug) {
     app.enable('view cache');
     app.use(compression());
-}
-
-if(!environment.debug){
-    const redis = require('redis');
 }
 
 // let RedisStore = require('connect-redis')(session);

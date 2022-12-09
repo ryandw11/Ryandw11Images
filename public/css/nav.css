@@ -39,6 +39,7 @@
     img#logo {
         vertical-align: middle;
         width: 25%;
+        max-width: 475px;
         image-rendering: -webkit-optimize-contrast;
         transform: translateZ(0);
     }

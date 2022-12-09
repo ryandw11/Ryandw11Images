@@ -56,12 +56,14 @@
             <div class="card">
                 <a href="/image/{{file_id}}"><img class="card-img-top border" style="max-height: 25rem;" src="{{file}}" alt="{{caption}}" loading="lazy"></a>
                 <div class="card-body">
-                    <h5 class="card-title">{{name}}</h5>
-                    <p class="card-text" style="color: black;">{{caption}}</p>
+                    <h5 class="card-title">{{{surrWord name ../queryData.title}}}</h5>
+                    <p class="card-text" style="color: black;">{{{surrWord caption ../queryData.title}}}</p>
                     <a href="/image/{{file_id}}" class="card-link">View</a>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded: <span class="time">{{date}}</span></small>
+                <div class="card-footer d-flex" style="font-size: 0.8em;">
+                    <a href="/profile/{{author_id}}" class="mb-0"><span class="user-name-replace">{{author_id}}</span></a>
+                    <p style="color: black;" class="mb-0">&nbsp; &#x2022; &nbsp;</p>
+                    <p class="text-muted mb-0">Uploaded: <span class="time">{{date}}</span></p>
                 </div>
             </div>
             {{/each}}
@@ -100,6 +102,7 @@
 
     <!-- The JavaScripts -->
     <script src="/js/image_time.js"></script>
+    <script src="/js/user.js"></script>
     <script src="/feather.min.js"></script>
     <script>
         feather.replace({ width: '20', height: '20', 'stroke-width': '1' });

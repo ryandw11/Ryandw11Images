@@ -116,7 +116,7 @@ module.exports = (db, environment) => {
         let sqlQuery =
             title.length < 1 || title == ''
                 ? `SELECT * FROM images WHERE unlisted=0 ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`
-                : `SELECT * FROM images WHERE (name LIKE $title) AND unlisted=0 ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`;
+                : `SELECT * FROM images WHERE (name LIKE $title OR caption LIKE $title) AND unlisted=0 ORDER BY id DESC LIMIT $pageNumber, $maxDisplay`;
         let sqlQueryData =
             title.length < 1 || title == ''
                 ? {

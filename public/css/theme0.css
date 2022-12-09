@@ -5,6 +5,7 @@
 :root{
     --main-color: #11b611;
     --main-color-hover: rgb(21, 129, 21);
+    --main-color-dark: rgb(26, 68, 26);
     --main-text-color: white;
     
     --background-color: rgb(32, 32, 32);
@@ -35,10 +36,15 @@
 
 .btn-theme:hover{
     background-color: var(--main-color-hover);
+    border-color: var(--main-color-dark);
 }
 
 .btn-theme:focus{
     background-color: var(--main-color-hover) !important;
+}
+
+.btn-theme {
+    border-color: var(--main-color-dark);
 }
 
 .txt-color{
