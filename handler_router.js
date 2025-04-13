@@ -10,11 +10,7 @@ const router = express.Router();
 const {v4: uuid} = require('uuid');
 const sessioner = require('./session.js');
 const fs = require('fs');
-
-const mmm = require('mmmagic'),
-    Magic = mmm.Magic;
-const magic = new Magic(mmm.MAGIC_MIME_TYPE);
-
+const { fileTypeFromFile } = require('file-type');
 const multer = require('multer');
 
 /**
@@ -129,7 +125,7 @@ module.exports = (db, environment) => {
                 sessioner.validateSession(
                     db,
                     req.session,
-                    () => {
+                    async () => {
                         let files = req.files;
                         let body = req.body;
                         // Validate all of the fields.
@@ -170,35 +166,46 @@ module.exports = (db, environment) => {
 
                             let file_id = files[i].filename.split('.')[0];
 
-                            // Detect the true file type to prevent just renaming the file.
-                            magic.detectFile('./' + files[i].path, (err, result) => {
-                                if (!validMimeType(result)) {
-                                    fs.unlink('./' + files[i].path, () => {});
-                                    return;
-                                }
-                                db.get(
-                                    'SELECT (user_id) FROM users WHERE current_session = $session',
-                                    {
-                                        $session: req.session.key,
-                                    },
-                                    (err, row) => {
-                                        if (row == null) return;
-                                        db.run(
-                                            `INSERT INTO images (file_id, uuid, name, caption, unlisted, author_id, file) VALUES ($file_id, $uuid, $name, $caption, $unlisted, $author_id, $file)`,
-                                            {
-                                                $file_id: file_id,
-                                                $uuid: uuid(),
-                                                $name: name,
-                                                $caption: caption,
-                                                $unlisted: unlisted,
-                                                $author_id: row.user_id,
-                                                $file: files[i].filename,
-                                            }
-                                        );
+                            let success = false;
+                            await (async () => {
+                                try {
+                                    const result = await fileTypeFromFile(files[i].path);
+                                    if( result && validMimeType(result.mime)) {
+                                        success = true;
                                     }
-                                );
-                            });
-                            // End of Magic Mime type detection.
+                                } catch (err) {
+                                    // blank
+                                }
+                            })();
+                            
+                            if(!success) {
+                                fs.unlink('./' + files[i].path, () => {});
+                                res.redirect('/?err=1');
+                                return;
+                            }
+
+                            db.get(
+                                'SELECT (user_id) FROM users WHERE current_session = $session',
+                                {
+                                    $session: req.session.key,
+                                },
+                                (err, row) => {
+                                    if (row == null) return;
+                                    db.run(
+                                        `INSERT INTO images (file_id, uuid, name, caption, unlisted, author_id, file) VALUES ($file_id, $uuid, $name, $caption, $unlisted, $author_id, $file)`,
+                                        {
+                                            $file_id: file_id,
+                                            $uuid: uuid(),
+                                            $name: name,
+                                            $caption: caption,
+                                            $unlisted: unlisted,
+                                            $author_id: row.user_id,
+                                            $file: files[i].filename,
+                                        }
+                                    );
+                                }
+                            );
+                            // End of Mime type detection.
                         }
 
                         req.files = null;
