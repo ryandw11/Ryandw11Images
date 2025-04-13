@@ -80,6 +80,13 @@ app.use(helmet({
                 "'unsafe-inline'", // Legacy, should be phased out
                 "cdnjs.cloudflare.com", // Popper.js
                 "ajax.googleapis.com" // jquery
+            ],
+            "img-src": [
+                "'self'",
+                "blob:", // Image Upload Preview
+            ],
+            "script-src-attr": [
+                "'unsafe-inline'"
             ]
         }
     }
