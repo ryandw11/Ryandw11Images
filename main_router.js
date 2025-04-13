@@ -132,7 +132,7 @@ module.exports = (db, environment) => {
         // Get the latest images starting at the page number and using the max display.
         db.all(sqlQuery, sqlQueryData, (err, rows) => {
             // Get the total number of images.
-            db.get('SELECT COUNT(*) FROM images WHERE (name LIKE $title) AND (unlisted=0)', {$title: `%${title}%`}, (err, count) => {
+            db.get('SELECT COUNT(*) FROM images WHERE (name LIKE $title OR caption LIKE $title) AND (unlisted=0)', {$title: `%${title}%`}, (err, count) => {
                 let number = count['COUNT(*)'];
                 // The array of page numbers.
                 let pages = [];
