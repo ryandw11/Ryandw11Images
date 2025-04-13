@@ -1,4 +1,6 @@
-const version_id = "1.0.1";
+//
+//  Ryandw11 Images
+//
 
 const express = require('express');
 const session = require('express-session');
@@ -7,6 +9,9 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const compression = require('compression');
 const helmet = require('helmet');
+
+// Database version id.
+const version_id = "1.0.1";
 
 const { MulterError } = require('multer');
 
@@ -67,7 +72,18 @@ const hbs = require('express-handlebars').engine({
     }
 });
 
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            "script-src": [
+                "'self'",
+                "'unsafe-inline'", // Legacy, should be phased out
+                "cdnjs.cloudflare.com", // Popper.js
+                "ajax.googleapis.com" // jquery
+            ]
+        }
+    }
+}));
 
 app.engine('hbs', hbs);
 app.set('view engine', 'hbs');
@@ -213,5 +229,5 @@ app.post('/theme', (req, res) => {
     }
 
     // Go back to the previous page.
-    res.redirect('back');
+    res.redirect(req.get('Referrer') || '/');
 });
