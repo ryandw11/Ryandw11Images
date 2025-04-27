@@ -81,6 +81,7 @@ app.use(helmet({
                 "cdnjs.cloudflare.com", // Popper.js
                 "ajax.googleapis.com", // jquery
                 "www.google.com", // Recaptcha
+                "www.gstatic.com"
             ],
             "img-src": [
                 "'self'",
@@ -88,6 +89,9 @@ app.use(helmet({
             ],
             "script-src-attr": [
                 "'unsafe-inline'"
+            ],
+            "frame-src": [
+                "www.google.com"
             ]
         }
     },
