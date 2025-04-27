@@ -89,6 +89,9 @@ app.use(helmet({
                 "'unsafe-inline'"
             ]
         }
+    },
+    crossOriginResourcePolicy: {
+        policy: "cross-origin"
     }
 }));
 
