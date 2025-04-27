@@ -79,7 +79,8 @@ app.use(helmet({
                 "'self'",
                 "'unsafe-inline'", // Legacy, should be phased out
                 "cdnjs.cloudflare.com", // Popper.js
-                "ajax.googleapis.com" // jquery
+                "ajax.googleapis.com", // jquery
+                "www.google.com", // Recaptcha
             ],
             "img-src": [
                 "'self'",
