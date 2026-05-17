@@ -229,6 +229,18 @@ app.use((err, req, res, next) => {
     res.status(500).render("error", {debug: environment.debug, error: err.stack, session: req.session, theme: getThemeNumber(req)});
 });
 
+function isValidRedirectPath(path) {
+    if( typeof path !== 'string' ) {
+        return false;
+    }
+
+    if( !path.startsWith('/') && path.startsWith('//') ) {
+        return false;
+    }
+
+    return true;
+}
+
 app.post('/theme', (req, res) => {
     let data = req.body.theme;
     switch (data) {
@@ -244,5 +256,10 @@ app.post('/theme', (req, res) => {
     }
 
     // Go back to the previous page.
-    res.redirect(req.get('Referrer') || '/');
+    let redirectPath = req.body.currentPath || '/';
+    if(isValidRedirectPath(redirectPath)) {
+        res.redirect(redirectPath);
+        return;
+    }
+    res.redirect('/');
 });
